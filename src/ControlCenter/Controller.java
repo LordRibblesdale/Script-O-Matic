@@ -4,6 +4,7 @@ import Interface.Interface;
 import Interface.PageChoice;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.ResourceBundle;
 
 public class Controller {
@@ -12,6 +13,7 @@ public class Controller {
     private Interface ui;
     private String currentCard;
     private ArrayList<String> initialisedCards;
+    private Stack<String> windows;
 
     private int status;
 
@@ -20,12 +22,16 @@ public class Controller {
         this.currentCard = PageChoice.FIRST;
         this.status = Status.AVAILABLE;
         this.initialisedCards = new ArrayList<>(1);
+        this.windows = new Stack<>();
 
         initialisedCards.add(PageChoice.FIRST);
+        windows.add(PageChoice.FIRST);
     }
 
     public void askNextPage(String fromCard) {
         if (currentCard.equals(fromCard)) {
+            windows.add(fromCard);
+
             String nextCard = nextCard();
 
             ui.initialiseCard(nextCard);
@@ -41,6 +47,8 @@ public class Controller {
 
     public void askNextPage(String fromCard, String choice) {
         if (currentCard.equals(fromCard)) {
+            windows.add(fromCard);
+
             String nextCard = nextCard(choice);
 
             ui.initialiseCard(nextCard);
@@ -50,6 +58,7 @@ public class Controller {
             }
 
             ui.getLayout().show(ui.getContentPane(), nextCard);
+            askForLargerWindow();
             currentCard = nextCard;
         }
     }
@@ -66,6 +75,10 @@ public class Controller {
 
     public void askForRefresh() {
         ui.setUpFrame();
+    }
+
+    public void askForLargerWindow() {
+        ui.enlargeWindow();
     }
 
     public ResourceBundle getLanguage() {
@@ -93,7 +106,13 @@ public class Controller {
 
         switch (currentCard) {
             case PageChoice.MAIN_MENU:
-                nextCard = choice;
+                switch (choice) {
+                    case PageChoice.MM_INSTALLER:
+                    case PageChoice.MM_EDIT:
+                    case PageChoice.MM_LOAD:
+                        nextCard = choice;
+                        break;
+                }
                 break;
         }
 
@@ -101,17 +120,6 @@ public class Controller {
     }
 
     private String previousCard() {
-        String previousCard = null;
-
-        switch (currentCard) {
-            case PageChoice.FIRST:
-                previousCard = PageChoice.FIRST;
-                break;
-            case PageChoice.MAIN_MENU:
-                previousCard = PageChoice.FIRST;
-                break;
-        }
-
-        return previousCard;
+        return windows.pop();
     }
 }

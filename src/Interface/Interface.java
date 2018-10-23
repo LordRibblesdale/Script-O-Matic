@@ -11,6 +11,7 @@ public class Interface extends JFrame {
 
     private StarterPanel first;
     private MainMenu mainMenu = null;
+    private TableList tableList = null;
 
     public Interface() {
         setLayout(layout = new CardLayout());
@@ -33,13 +34,22 @@ public class Interface extends JFrame {
                 mainMenu = new MainMenu(controller);
                 add(mainMenu, PageChoice.MAIN_MENU);
                 break;
+            case PageChoice.MM_INSTALLER:
+                tableList = new TableList(controller);
+                add(tableList, PageChoice.MM_INSTALLER);
+                break;
         }
     }
 
     public void setUpFrame() {
-        //pack();
+        pack();
         //setMinimumSize(getSize());
         validate(); //??
+    }
+
+    public void enlargeWindow() {
+        setSize(new Dimension(700, 700));
+        setLocationRelativeTo(null);
     }
 
     @Override
