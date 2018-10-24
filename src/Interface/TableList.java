@@ -14,9 +14,11 @@ public class TableList extends JPanel {
     private SpringLayout layout;
 
     private Controller controller;
+    private String currentCard;
 
-    TableList(Controller controller) {
+    TableList(Controller controller, String currentCard, Program[] exec) {
         this.controller = controller;
+        this.currentCard = currentCard;
 
         setLayout(layout = new SpringLayout());
 
@@ -26,7 +28,12 @@ public class TableList extends JPanel {
         add = new JButton(controller.getLanguage().getString("addEntry"));
         remove = new JButton(controller.getLanguage().getString("removeSelectedEntry"));
 
-        modelTable = new ProgramTable(controller);
+        if (exec != null) {
+            modelTable = new ProgramTable(controller, exec);
+        } else {
+            modelTable = new ProgramTable(controller);
+        }
+
         table = new JTable(modelTable);
         scrollPane = new JScrollPane(table);
 
@@ -36,6 +43,11 @@ public class TableList extends JPanel {
         add(add);
         add(remove);
 
+        setUpLayout();
+        addAllListeners();
+    }
+
+    private void setUpLayout() {
         layout.putConstraint(SpringLayout.NORTH, scrollPane,
                 5,
                 SpringLayout.NORTH, TableList.this);
@@ -75,57 +87,21 @@ public class TableList extends JPanel {
                 SpringLayout.NORTH, next);
     }
 
-    TableList(Controller controller, Program[] exec) {  //TODO Optimise here
-        this.controller = controller;
+    private void addAllListeners() {
+        back.addActionListener(e -> {
+            controller.askPreviousPage(currentCard);
+        });
 
-        setLayout(layout = new SpringLayout());
+        next.addActionListener(e -> {
+            //TODO HERE
+        });
 
-        back = new JButton(controller.getLanguage().getString("previousButton"));
-        next = new JButton(controller.getLanguage().getString("nextButton"));
+        add.addActionListener(e -> {
+            new ProgramEditorWindow(controller);
+        });
 
-        add = new JButton(controller.getLanguage().getString("addEntry"));
-        remove = new JButton(controller.getLanguage().getString("removeSelectedEntry"));
-
-        modelTable = new ProgramTable(controller, exec);    //TODO only here
-        table = new JTable(modelTable);
-        scrollPane = new JScrollPane(table);
-
-        layout.putConstraint(SpringLayout.NORTH, scrollPane,
-                5,
-                SpringLayout.NORTH, TableList.this);
-        layout.putConstraint(SpringLayout.WEST, scrollPane,
-                5,
-                SpringLayout.WEST, TableList.this);
-        layout.putConstraint(SpringLayout.EAST, scrollPane,
-                -5,
-                SpringLayout.EAST, TableList.this);
-
-        layout.putConstraint(SpringLayout.SOUTH, back,
-                -5,
-                SpringLayout.SOUTH, TableList.this);
-        layout.putConstraint(SpringLayout.WEST, back,
-                5,
-                SpringLayout.WEST, TableList.this);
-
-        layout.putConstraint(SpringLayout.EAST, next,
-                -5,
-                SpringLayout.EAST, TableList.this);
-        layout.putConstraint(SpringLayout.SOUTH, next,
-                -5,
-                SpringLayout.SOUTH, TableList.this);
-
-        layout.putConstraint(SpringLayout.SOUTH, remove,
-                -5,
-                SpringLayout.NORTH, next);
-        layout.putConstraint(SpringLayout.EAST, remove,
-                -5,
-                SpringLayout.EAST, TableList.this);
-
-        layout.putConstraint(SpringLayout.EAST, add,
-                -5,
-                SpringLayout.WEST, remove);
-        layout.putConstraint(SpringLayout.SOUTH, add,
-                -5,
-                SpringLayout.NORTH, next);
+        remove.addActionListener(e -> {
+            //TODO HERE
+        });
     }
 }

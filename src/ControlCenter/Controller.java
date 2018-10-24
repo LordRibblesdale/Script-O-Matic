@@ -85,6 +85,10 @@ public class Controller {
         return language;
     }
 
+    public Interface getUi() {
+        return ui;
+    }
+
     public void setLanguage(ResourceBundle language) {
         this.language = language;
     }

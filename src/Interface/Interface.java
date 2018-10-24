@@ -35,7 +35,7 @@ public class Interface extends JFrame {
                 add(mainMenu, PageChoice.MAIN_MENU);
                 break;
             case PageChoice.MM_INSTALLER:
-                tableList = new TableList(controller);
+                tableList = new TableList(controller, PageChoice.MM_INSTALLER, null);
                 add(tableList, PageChoice.MM_INSTALLER);
                 break;
         }

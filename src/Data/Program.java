@@ -10,27 +10,29 @@ public class Program implements Serializable {
     private String description;
     private File execLocation;
     private URL link;
+    private boolean hasDependencies;
     private ArrayList<Program> extras;
 
-    Program(String name, File execLocation) {
+    Program(String name, File execLocation, boolean hasDependencies) {
         this.name = name;
         this.execLocation = execLocation;
+        this.hasDependencies = hasDependencies;
 
         extras = new ArrayList<>(1);
     }
 
-    Program(String name, URL link, File execLocation) {
-        this(name, execLocation);
+    Program(String name, URL link, File execLocation, boolean hasDependencies) {
+        this(name, execLocation, hasDependencies);
         this.link = link;
     }
 
-    Program(String name, String description, File execLocation) {
-        this(name, execLocation);
+    Program(String name, String description, File execLocation, boolean hasDependencies) {
+        this(name, execLocation, hasDependencies);
         this.description = description;
     }
 
-    Program(String name, String description, URL link, File execLocation) {
-        this(name, description, execLocation);
+    Program(String name, String description, URL link, File execLocation, boolean hasDependencies) {
+        this(name, description, execLocation, hasDependencies);
         this.link = link;
     }
 
@@ -54,6 +56,10 @@ public class Program implements Serializable {
         return extras;
     }
 
+    public boolean hasDependencies() {
+        return hasDependencies;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -68,5 +74,9 @@ public class Program implements Serializable {
 
     public void setExecLocation(File execLocation) {
         this.execLocation = execLocation;
+    }
+
+    public boolean setDependencies() {
+        return hasDependencies;
     }
 }
