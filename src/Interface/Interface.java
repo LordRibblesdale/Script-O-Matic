@@ -56,4 +56,8 @@ public class Interface extends JFrame {
     public CardLayout getLayout() {
         return layout;
     }
+
+    public TableList getTableList() {
+        return tableList;
+    }
 }

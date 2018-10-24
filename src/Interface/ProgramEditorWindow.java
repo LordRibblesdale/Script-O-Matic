@@ -1,9 +1,13 @@
 package Interface;
 
 import ControlCenter.Controller;
+import Data.Program;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ProgramEditorWindow extends JFrame {
     private JTextField fileField;
@@ -64,6 +68,7 @@ public class ProgramEditorWindow extends JFrame {
         add(isAloneExecLabel);
 
         setUpLayout();
+        addAllListeners();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));
@@ -169,6 +174,36 @@ public class ProgramEditorWindow extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, back,
                 -5,
                 SpringLayout.SOUTH, ProgramEditorWindow.this.getContentPane());
+    }
 
+    private void addAllListeners() {
+        back.addActionListener(e -> {
+            dispose();
+        });
+
+        save.addActionListener(e -> {
+            try {
+                controller.processProgramCreation(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        new URL(linkField.getText()),
+                        new File(fileField.getText()),
+                        isAloneExec.isSelected()
+                ));
+            } catch (MalformedURLException e1) {
+                JOptionPane.showMessageDialog(ProgramEditorWindow.this,
+                        controller.getLanguage().getString("urlException"),
+                        controller.getLanguage().getString("exception"),
+                        JOptionPane.ERROR_MESSAGE);
+
+                controller.processProgramCreation(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        null,
+                        new File(fileField.getText()),
+                        isAloneExec.isSelected()
+                ));
+            }
+        });
     }
 }

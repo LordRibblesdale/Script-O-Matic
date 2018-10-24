@@ -23,8 +23,6 @@ public class ProgramTable extends AbstractTableModel {
         };
 
         data = new Object[1][columns.length];
-
-
     }
 
     ProgramTable(Controller controller, Program[] exec) {
@@ -48,6 +46,33 @@ public class ProgramTable extends AbstractTableModel {
             data[i][2] = p.getExecLocation().getAbsolutePath();
             data[i][3] = p.getDescription();
             data[i++][3] = p.getLink();
+        }
+    }
+
+    public void addProgram(Program exec) {
+        if (data[0][0] != null) {
+            Object[][] tmpData = new Object[data.length+1][columns.length];
+
+            int i = 0;
+            for (Object[] o : data) {
+                tmpData[i++] = o;
+            }
+
+            tmpData[i][0] = exec.getName();
+            tmpData[i][1] = exec.getExecLocation();
+            tmpData[i][2] = exec.getExecLocation().getAbsolutePath();
+            tmpData[i][3] = exec.getDescription();
+            tmpData[i][4] = exec.getLink();
+
+            data = tmpData;
+        } else {
+            data = new Object[1][columns.length];
+
+            data[0][0] = exec.getName();
+            data[0][1] = exec.getExecLocation();
+            data[0][2] = exec.getExecLocation().getAbsolutePath();
+            data[0][3] = exec.getDescription();
+            data[0][4] = exec.getLink();
         }
     }
 

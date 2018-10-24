@@ -47,6 +47,10 @@ public class TableList extends JPanel {
         addAllListeners();
     }
 
+    public ProgramTable getModelTable() {
+        return modelTable;
+    }
+
     private void setUpLayout() {
         layout.putConstraint(SpringLayout.NORTH, scrollPane,
                 5,

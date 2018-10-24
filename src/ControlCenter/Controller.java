@@ -1,5 +1,6 @@
 package ControlCenter;
 
+import Data.Program;
 import Interface.Interface;
 import Interface.PageChoice;
 
@@ -71,6 +72,10 @@ public class Controller {
                 currentCard = previousCard;
             }
         }
+    }
+
+    public void processProgramCreation(Program exec) {
+        //ui.getTableList().getModelTable().add
     }
 
     public void askForRefresh() {
