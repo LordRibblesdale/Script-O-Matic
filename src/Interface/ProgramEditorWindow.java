@@ -191,10 +191,12 @@ public class ProgramEditorWindow extends JFrame {
                         isAloneExec.isSelected()
                 ));
             } catch (MalformedURLException e1) {
+                /*
                 JOptionPane.showMessageDialog(ProgramEditorWindow.this,
                         controller.getLanguage().getString("urlException"),
                         controller.getLanguage().getString("exception"),
                         JOptionPane.ERROR_MESSAGE);
+                        */
 
                 controller.processProgramCreation(new Program(
                         nameField.getText(),
@@ -203,6 +205,17 @@ public class ProgramEditorWindow extends JFrame {
                         new File(fileField.getText()),
                         isAloneExec.isSelected()
                 ));
+            } finally {
+                dispose();
+            }
+        });
+
+        open.addActionListener(e -> {
+            JFileChooser file = new JFileChooser();
+            int result = file.showOpenDialog(controller.getUi());
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                fileField.setText(file.getSelectedFile().getPath());
             }
         });
     }

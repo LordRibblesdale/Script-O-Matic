@@ -75,7 +75,8 @@ public class Controller {
     }
 
     public void processProgramCreation(Program exec) {
-        //ui.getTableList().getModelTable().add
+        ui.getTableList().getModelTable().addProgram(exec);
+        askForRefresh();
     }
 
     public void askForRefresh() {

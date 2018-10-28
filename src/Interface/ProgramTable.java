@@ -59,7 +59,7 @@ public class ProgramTable extends AbstractTableModel {
             }
 
             tmpData[i][0] = exec.getName();
-            tmpData[i][1] = exec.getExecLocation();
+            tmpData[i][1] = exec.getExecLocation().getName();
             tmpData[i][2] = exec.getExecLocation().getAbsolutePath();
             tmpData[i][3] = exec.getDescription();
             tmpData[i][4] = exec.getLink();

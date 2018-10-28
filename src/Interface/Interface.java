@@ -42,9 +42,10 @@ public class Interface extends JFrame {
     }
 
     public void setUpFrame() {
-        pack();
+        //pack();
         //setMinimumSize(getSize());
-        validate(); //??
+        repaint();
+        validate();
     }
 
     public void enlargeWindow() {
