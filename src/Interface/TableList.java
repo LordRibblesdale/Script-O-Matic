@@ -51,6 +51,10 @@ public class TableList extends JPanel {
         return modelTable;
     }
 
+    public JTable getTable() {
+        return table;
+    }
+
     private void setUpLayout() {
         layout.putConstraint(SpringLayout.NORTH, scrollPane,
                 5,
@@ -105,7 +109,7 @@ public class TableList extends JPanel {
         });
 
         remove.addActionListener(e -> {
-            //TODO HERE
+            controller.processProgramDeletion();
         });
     }
 }

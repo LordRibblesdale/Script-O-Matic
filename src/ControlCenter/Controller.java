@@ -76,7 +76,13 @@ public class Controller {
 
     public void processProgramCreation(Program exec) {
         ui.getTableList().getModelTable().addProgram(exec);
-        askForRefresh();
+        ui.getTableList().getModelTable().fireTableDataChanged();
+        //askForRefresh();
+    }
+
+    public void processProgramDeletion() {
+        ui.getTableList().getModelTable().removeProgram(ui.getTableList().getTable().getSelectedRow());
+        ui.getTableList().getModelTable().fireTableDataChanged();
     }
 
     public void askForRefresh() {
