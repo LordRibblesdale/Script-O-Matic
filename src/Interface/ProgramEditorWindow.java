@@ -182,31 +182,39 @@ public class ProgramEditorWindow extends JFrame {
         });
 
         save.addActionListener(e -> {
-            try {
-                controller.processProgramCreation(new Program(
-                        nameField.getText(),
-                        descriptionField.getText(),
-                        new URL(linkField.getText()),
-                        new File(fileField.getText()),
-                        isAloneExec.isSelected()
-                ));
-            } catch (MalformedURLException e1) {
-                /*
+            if (!fileField.getText().equals("") && fileField.getText() != null &&
+                    !nameField.getText().equals("") && nameField.getText() != null) {
+                File file = new File(fileField.getText());
+
+                if (file.exists()) {
+                    if (file.isDirectory()) {
+                        int choice = JOptionPane.showConfirmDialog(
+                                controller.getUi(),
+                                controller.getLanguage().getString("fileIsDirectory"),
+                                controller.getLanguage().getString("fileIsDirectoryTitle"),
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        if (choice == JOptionPane.OK_OPTION) {
+                            createProgramInstance(file);
+                        }
+                    } else {
+                        createProgramInstance(file);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(ProgramEditorWindow.this,
+                            controller.getLanguage().getString("fileNotExists"),
+                            controller.getLanguage().getString("exception"),
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
                 JOptionPane.showMessageDialog(ProgramEditorWindow.this,
-                        controller.getLanguage().getString("urlException"),
+                        fileField.getText().equals("") ?
+                                controller.getLanguage().getString("fileNameEmpty") :
+                                controller.getLanguage().getString("programNameEmpty"),
                         controller.getLanguage().getString("exception"),
                         JOptionPane.ERROR_MESSAGE);
-                        */
-
-                controller.processProgramCreation(new Program(
-                        nameField.getText(),
-                        descriptionField.getText(),
-                        null,
-                        new File(fileField.getText()),
-                        isAloneExec.isSelected()
-                ));
-            } finally {
-                dispose();
             }
         });
 
@@ -218,5 +226,31 @@ public class ProgramEditorWindow extends JFrame {
                 fileField.setText(file.getSelectedFile().getPath());
             }
         });
+    }
+
+    private void createProgramInstance(File file) {
+        try {
+            controller.processProgramCreation(new Program(
+                    nameField.getText(),
+                    descriptionField.getText(),
+                    !linkField.getText().equals("") ? new URL(linkField.getText()) : null,
+                    file,
+                    isAloneExec.isSelected()
+            ));
+        } catch (MalformedURLException e1) {
+            JOptionPane.showMessageDialog(ProgramEditorWindow.this,
+                    controller.getLanguage().getString("urlException"),
+                    controller.getLanguage().getString("exception"),
+                    JOptionPane.INFORMATION_MESSAGE);
+            controller.processProgramCreation(new Program(
+                    nameField.getText(),
+                    descriptionField.getText(),
+                    null,
+                    file,
+                    isAloneExec.isSelected()
+            ));
+        } finally {
+            dispose();
+        }
     }
 }
