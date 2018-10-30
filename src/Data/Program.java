@@ -16,10 +16,19 @@ public class Program implements Serializable {
     public Program(String name, String description, URL link, File execLocation, boolean hasDependencies) {
         this.name = name;
         this.execLocation = execLocation;
+        this.description = description;
         this.link = link;
         this.hasDependencies = hasDependencies;
 
         extras = new ArrayList<>(1);
+    }
+
+    @Override
+    public String toString() {
+        return "-> " +
+                name +
+                " " +
+                execLocation.getAbsolutePath();
     }
 
     public String getName() {

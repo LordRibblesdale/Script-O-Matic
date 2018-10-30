@@ -16,6 +16,8 @@ public class Controller {
     private ArrayList<String> initialisedCards;
     private Stack<String> windows;
 
+    private ArrayList<Program> executables;
+
     private int status;
 
     public Controller(Interface ui) {
@@ -75,14 +77,35 @@ public class Controller {
     }
 
     public void processProgramCreation(Program exec) {
+        if (executables == null) {
+            executables = new ArrayList<>(1);
+        }
+
+        executables.add(exec);
+
         ui.getTableList().getModelTable().addProgram(exec);
         ui.getTableList().getModelTable().fireTableDataChanged();
         //askForRefresh();
     }
 
     public void processProgramDeletion() {
-        ui.getTableList().getModelTable().removeProgram(ui.getTableList().getTable().getSelectedRow());
-        ui.getTableList().getModelTable().fireTableDataChanged();
+        if (!executables.isEmpty()) {
+            int index = ui.getTableList().getTable().getSelectedRow();
+
+            if (index != -1) {
+                ui.getTableList().getModelTable().removeProgram(index);
+                ui.getTableList().getModelTable().fireTableDataChanged();
+
+                executables.remove(index);
+                if (executables.isEmpty()) {
+                    ui.getTableList().disableNext();
+                }
+            }
+        }
+    }
+
+    public void processFileScriptCreation() {
+
     }
 
     public void askForRefresh() {
@@ -101,6 +124,10 @@ public class Controller {
         return ui;
     }
 
+    public ArrayList<Program> getExecutables() {
+        return executables;
+    }
+
     public void setLanguage(ResourceBundle language) {
         this.language = language;
     }
@@ -111,6 +138,10 @@ public class Controller {
         switch (currentCard) {
             case PageChoice.FIRST:
                 nextCard = PageChoice.MAIN_MENU;
+                break;
+            case PageChoice.MM_INSTALLER:
+            case PageChoice.MM_LOAD:
+                nextCard = PageChoice.CHECKOUT;
                 break;
         }
 

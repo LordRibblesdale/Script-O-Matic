@@ -24,9 +24,11 @@ public class TableList extends JPanel {
 
         back = new JButton(controller.getLanguage().getString("previousButton"));
         next = new JButton(controller.getLanguage().getString("nextButton"));
+        next.setEnabled(false);
 
         add = new JButton(controller.getLanguage().getString("addEntry"));
         remove = new JButton(controller.getLanguage().getString("removeSelectedEntry"));
+        remove.setEnabled(false);
 
         if (exec != null) {
             modelTable = new ProgramTable(controller, exec);
@@ -53,6 +55,18 @@ public class TableList extends JPanel {
 
     public JTable getTable() {
         return table;
+    }
+
+    void enableNext() {
+        next.setEnabled(true);
+        remove.setEnabled(true);
+        controller.askForRefresh();
+    }
+
+    public void disableNext() {
+        next.setEnabled(false);
+        remove.setEnabled(false);
+        controller.askForRefresh();
     }
 
     private void setUpLayout() {
@@ -101,7 +115,7 @@ public class TableList extends JPanel {
         });
 
         next.addActionListener(e -> {
-            //TODO HERE
+            controller.askNextPage(currentCard);
         });
 
         add.addActionListener(e -> {

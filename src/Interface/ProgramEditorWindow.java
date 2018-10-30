@@ -9,7 +9,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ProgramEditorWindow extends JFrame {
+public class ProgramEditorWindow extends JDialog {
     private JTextField fileField;
     private JTextField nameField;
     private JTextField descriptionField;
@@ -30,6 +30,7 @@ public class ProgramEditorWindow extends JFrame {
     private SpringLayout layout;
 
     ProgramEditorWindow(Controller controller) {
+        super(controller.getUi(), controller.getLanguage().getString("programWindow"), true);
         this.controller = controller;
 
         setLayout(layout = new SpringLayout());
@@ -41,7 +42,7 @@ public class ProgramEditorWindow extends JFrame {
 
         open = new JButton(controller.getLanguage().getString("openButton"));
         addExtras = new JButton(controller.getLanguage().getString("addExtrasButton"));
-        back = new JButton(controller.getLanguage().getString("previousButton"));
+        back = new JButton(controller.getLanguage().getString("discardButton"));
         save = new JButton(controller.getLanguage().getString("saveButton"));
 
         isAloneExec = new JCheckBox();
@@ -69,7 +70,6 @@ public class ProgramEditorWindow extends JFrame {
 
         setUpLayout();
         addAllListeners();
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));
         setLocationRelativeTo(controller.getUi());
@@ -251,6 +251,8 @@ public class ProgramEditorWindow extends JFrame {
             ));
         } finally {
             dispose();
+
+            controller.getUi().getTableList().enableNext();
         }
     }
 }

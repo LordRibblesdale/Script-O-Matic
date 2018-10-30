@@ -12,6 +12,7 @@ public class Interface extends JFrame {
     private StarterPanel first;
     private MainMenu mainMenu = null;
     private TableList tableList = null;
+    private CheckoutPanel checkoutPanel = null;
 
     public Interface() {
         setLayout(layout = new CardLayout());
@@ -37,6 +38,10 @@ public class Interface extends JFrame {
             case PageChoice.MM_INSTALLER:
                 tableList = new TableList(controller, PageChoice.MM_INSTALLER, null);
                 add(tableList, PageChoice.MM_INSTALLER);
+                break;
+            case PageChoice.CHECKOUT:
+                checkoutPanel = new CheckoutPanel(controller);
+                add(checkoutPanel, PageChoice.CHECKOUT);
                 break;
         }
     }

@@ -61,7 +61,7 @@ public class ProgramTable extends AbstractTableModel {
     }
 
     public void removeProgram(int index) {
-        if (data.isEmpty()) {
+        if (!data.isEmpty() && index != -1) {
             data.remove(index);
         }
     }
