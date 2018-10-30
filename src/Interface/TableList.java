@@ -10,7 +10,7 @@ public class TableList extends JPanel {
     private ProgramTable modelTable;
     private JTable table;
     private JButton back, next;
-    private JButton add, remove;
+    private JButton add, remove, removeAll;
     private SpringLayout layout;
 
     private Controller controller;
@@ -28,7 +28,9 @@ public class TableList extends JPanel {
 
         add = new JButton(controller.getLanguage().getString("addEntry"));
         remove = new JButton(controller.getLanguage().getString("removeSelectedEntry"));
+        removeAll = new JButton(controller.getLanguage().getString("removeAllEntries"));
         remove.setEnabled(false);
+        removeAll.setEnabled(false);
 
         if (exec != null) {
             modelTable = new ProgramTable(controller, exec);
@@ -44,6 +46,7 @@ public class TableList extends JPanel {
         add(next);
         add(add);
         add(remove);
+        add(removeAll);
 
         setUpLayout();
         addAllListeners();
@@ -60,12 +63,14 @@ public class TableList extends JPanel {
     void enableNext() {
         next.setEnabled(true);
         remove.setEnabled(true);
+        removeAll.setEnabled(true);
         controller.askForRefresh();
     }
 
     public void disableNext() {
         next.setEnabled(false);
         remove.setEnabled(false);
+        removeAll.setEnabled(false);
         controller.askForRefresh();
     }
 
@@ -101,9 +106,16 @@ public class TableList extends JPanel {
                 -5,
                 SpringLayout.EAST, TableList.this);
 
-        layout.putConstraint(SpringLayout.EAST, add,
+        layout.putConstraint(SpringLayout.EAST, removeAll,
                 -5,
                 SpringLayout.WEST, remove);
+        layout.putConstraint(SpringLayout.SOUTH, removeAll,
+                -5,
+                SpringLayout.NORTH, next);
+
+        layout.putConstraint(SpringLayout.EAST, add,
+                -5,
+                SpringLayout.WEST, removeAll);
         layout.putConstraint(SpringLayout.SOUTH, add,
                 -5,
                 SpringLayout.NORTH, next);
@@ -124,6 +136,10 @@ public class TableList extends JPanel {
 
         remove.addActionListener(e -> {
             controller.processProgramDeletion();
+        });
+
+        removeAll.addActionListener(e -> {
+            controller.processCleaningTable();
         });
     }
 }

@@ -112,7 +112,7 @@ public class ProgramEditorWindow extends JDialog {
                 SpringLayout.NORTH, openFile);
 
         layout.putConstraint(SpringLayout.NORTH, isAloneExecLabel,
-                5,
+                10,
                 SpringLayout.SOUTH, fileField);
         layout.putConstraint(SpringLayout.WEST, isAloneExecLabel,
                 5,

@@ -104,8 +104,15 @@ public class Controller {
         }
     }
 
-    public void processFileScriptCreation() {
+    public void processCleaningTable() {
+        executables.clear();
+        ui.getTableList().getModelTable().removeAllPrograms();
+        ui.getTableList().getModelTable().fireTableDataChanged();
+        ui.getTableList().disableNext();
+    }
 
+    public void processFileScriptCreation() {
+        
     }
 
     public void askForRefresh() {

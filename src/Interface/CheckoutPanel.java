@@ -90,5 +90,9 @@ public class CheckoutPanel extends JPanel {
         back.addActionListener(e -> {
             controller.askPreviousPage(PageChoice.CHECKOUT);
         });
+
+        create.addActionListener(e -> {
+            controller.processFileScriptCreation();
+        });
     }
 }

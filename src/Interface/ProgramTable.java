@@ -66,6 +66,10 @@ public class ProgramTable extends AbstractTableModel {
         }
     }
 
+    public void removeAllPrograms() {
+        data.clear();
+    }
+
     @Override
     public int getRowCount() {
         return data.size();

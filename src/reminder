@@ -1,3 +1,9 @@
 1. When opening a file and one file selected is a folder, open every file inside the folder
     (the folder should be asked before)
 2. Every file/directory has to be checked (exists?) before loading file instance process.
+3. Creating script process:
+    - Create script file
+    - Create folder DATA where to copy files
+    - Copy file is based on script file location + DATA
+    - Only file will be copied if isAlone is not checked, otherwise the entire directory
+    - File location wil be based on DATA position + files/folders (so new File() will have file+DATA+...)
