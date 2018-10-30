@@ -4,6 +4,7 @@ import ControlCenter.Controller;
 import Data.Program;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -14,7 +15,8 @@ public class ProgramEditorWindow extends JDialog {
     private JTextField nameField;
     private JTextField descriptionField;
     private JTextField linkField;
-    private JButton open;
+    private JButton openFile;
+    private JButton openFolder;
     private JButton addExtras;
     private JButton back;
     private JButton save;
@@ -35,12 +37,15 @@ public class ProgramEditorWindow extends JDialog {
 
         setLayout(layout = new SpringLayout());
 
-        fileField = new JTextField(10);
-        nameField = new JTextField(10);
-        descriptionField = new JTextField(10);
-        linkField = new JTextField(10);
+        fileField = new JTextField(25);
+        fileField.setEditable(false);
 
-        open = new JButton(controller.getLanguage().getString("openButton"));
+        nameField = new JTextField(15);
+        descriptionField = new JTextField(20);
+        linkField = new JTextField(15);
+
+        openFile = new JButton(controller.getLanguage().getString("openButton"));
+        openFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
         addExtras = new JButton(controller.getLanguage().getString("addExtrasButton"));
         back = new JButton(controller.getLanguage().getString("discardButton"));
         save = new JButton(controller.getLanguage().getString("saveButton"));
@@ -57,7 +62,8 @@ public class ProgramEditorWindow extends JDialog {
         add(nameField);
         add(descriptionField);
         add(linkField);
-        add(open);
+        add(openFile);
+        add(openFolder);
         add(addExtras);
         add(back);
         add(save);
@@ -91,12 +97,19 @@ public class ProgramEditorWindow extends JDialog {
                 5,
                 SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
 
-        layout.putConstraint(SpringLayout.WEST, open,
+        layout.putConstraint(SpringLayout.WEST, openFile,
                 5,
                 SpringLayout.EAST, fileField);
-        layout.putConstraint(SpringLayout.NORTH, open,
+        layout.putConstraint(SpringLayout.NORTH, openFile,
                 0,
                 SpringLayout.NORTH, fileField);
+
+        layout.putConstraint(SpringLayout.WEST, openFolder,
+                5,
+                SpringLayout.EAST, openFile);
+        layout.putConstraint(SpringLayout.NORTH, openFolder,
+                0,
+                SpringLayout.NORTH, openFile);
 
         layout.putConstraint(SpringLayout.NORTH, isAloneExecLabel,
                 5,
@@ -187,21 +200,7 @@ public class ProgramEditorWindow extends JDialog {
                 File file = new File(fileField.getText());
 
                 if (file.exists()) {
-                    if (file.isDirectory()) {
-                        int choice = JOptionPane.showConfirmDialog(
-                                controller.getUi(),
-                                controller.getLanguage().getString("fileIsDirectory"),
-                                controller.getLanguage().getString("fileIsDirectoryTitle"),
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
-
-                        if (choice == JOptionPane.OK_OPTION) {
-                            createProgramInstance(file);
-                        }
-                    } else {
-                        createProgramInstance(file);
-                    }
+                    createProgramInstance(file);
                 } else {
                     JOptionPane.showMessageDialog(ProgramEditorWindow.this,
                             controller.getLanguage().getString("fileNotExists"),
@@ -218,13 +217,28 @@ public class ProgramEditorWindow extends JDialog {
             }
         });
 
-        open.addActionListener(e -> {
+        openFile.addActionListener(e -> {
             JFileChooser file = new JFileChooser();
+            file.setFileFilter(new FileNameExtensionFilter(
+                    controller.getLanguage().getString("msExecutables"), "exe"));
+
             int result = file.showOpenDialog(controller.getUi());
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 fileField.setText(file.getSelectedFile().getPath());
             }
+        });
+
+        openFolder.addActionListener(e -> {
+            JFileChooser file = new JFileChooser();
+            file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            int result = file.showOpenDialog(controller.getUi());
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                fileField.setText(file.getSelectedFile().getPath());
+            }
+
         });
     }
 
