@@ -43,6 +43,11 @@ public class Interface extends JFrame {
                 checkoutPanel = new CheckoutPanel(controller);
                 add(checkoutPanel, PageChoice.CHECKOUT);
                 break;
+            case PageChoice.FINAL:
+                JPanel p = new JPanel();
+                p.add(new JLabel("TEMPORARY END"));
+                add(p, PageChoice.FINAL);
+                break;
         }
     }
 

@@ -1,10 +1,18 @@
 package ControlCenter;
 
 import Data.Program;
+import Data.Script;
 import Interface.Interface;
 import Interface.PageChoice;
+import org.apache.commons.io.FileUtils;
 
+import java.io.*;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Stack;
 import java.util.ResourceBundle;
 
@@ -111,8 +119,55 @@ public class Controller {
         ui.getTableList().disableNext();
     }
 
-    public void processFileScriptCreation() {
-        
+    public void processFileScriptCreation(File folder, String fromCard) {
+        Script script = null;
+        ObjectOutputStream out = null;
+        File data = new File(folder.getPath() + File.separator + "DATA");
+        int result = -1;
+
+        status = Status.BUSY;
+
+        try {
+            data.createNewFile();
+
+            for (Program p : executables) {
+                //FileOutputStream fileOutputStream;
+
+                if (p.hasDependencies()) {
+                    FileUtils.copyDirectoryToDirectory(p.getExecLocation().toPath().getParent().toFile(),
+                            data);
+
+                    p.setExecLocation(File.pathSeparator
+                            + "DATA"
+                            + File.separator
+                            + p.getExecLocation().toPath().getParent().toFile().getName()
+                            + p.getExecLocation().getName());
+                } else {
+                    FileUtils.copyFile(p.getExecLocation().toPath().toFile(),
+                            new File(data + File.separator + p.getExecLocation().getName()));
+
+                    p.setExecLocation(File.pathSeparator + "DATA" + File.separator + p.getExecLocation().getName());
+                }
+
+            }
+
+            script = new Script(executables);
+
+            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(folder + File.separator + new SimpleDateFormat("yyyy-MM-dd HH-mm").format(new Date()) + ".som")));
+            out.writeObject(script);
+            out.close();
+
+            result = Result.COMPLETE;
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = Result.ERROR;
+        }
+
+        if (result == Result.COMPLETE) {
+            askNextPage(fromCard);
+        }
+
+        status = Status.AVAILABLE;
     }
 
     public void askForRefresh() {
@@ -149,6 +204,9 @@ public class Controller {
             case PageChoice.MM_INSTALLER:
             case PageChoice.MM_LOAD:
                 nextCard = PageChoice.CHECKOUT;
+                break;
+            case PageChoice.CHECKOUT:
+                nextCard = PageChoice.FINAL;
                 break;
         }
 

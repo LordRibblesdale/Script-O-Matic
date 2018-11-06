@@ -5,6 +5,7 @@ import Data.Program;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 
 public class CheckoutPanel extends JPanel {
@@ -12,8 +13,12 @@ public class CheckoutPanel extends JPanel {
     private JPanel programs;
     private JLabel intro;
     private JLabel confirm;
+    private JTextField location;
     private JButton back;
     private JButton create;
+    private JButton selectFolder;
+
+    private File folder;
 
     private SpringLayout layout;
 
@@ -36,8 +41,12 @@ public class CheckoutPanel extends JPanel {
 
         intro = new JLabel(controller.getLanguage().getString("listAllPrograms"));
         confirm = new JLabel(controller.getLanguage().getString("confirmCreation"));
+        location = new JTextField(20);
+        location.setEditable(false);
         back = new JButton(controller.getLanguage().getString("previousButton"));
         create = new JButton(controller.getLanguage().getString("createButton"));
+        create.setEnabled(false);
+        selectFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
 
         setUpLayout();
         addAllListeners();
@@ -45,8 +54,10 @@ public class CheckoutPanel extends JPanel {
         add(intro);
         add(programs);
         add(confirm);
+        add(location);
         add(back);
         add(create);
+        add(selectFolder);
     }
 
     private void setUpLayout() {
@@ -66,7 +77,7 @@ public class CheckoutPanel extends JPanel {
 
         layout.putConstraint(SpringLayout.SOUTH, confirm,
                 -5,
-                SpringLayout.SOUTH, CheckoutPanel.this);
+                SpringLayout.NORTH, location);
         layout.putConstraint(SpringLayout.WEST, confirm,
                 5,
                 SpringLayout.WEST, CheckoutPanel.this);
@@ -84,6 +95,23 @@ public class CheckoutPanel extends JPanel {
         layout.putConstraint(SpringLayout.SOUTH, back,
                 -5,
                 SpringLayout.SOUTH, CheckoutPanel.this);
+
+        layout.putConstraint(SpringLayout.WEST, back,
+                5,
+                SpringLayout.EAST, selectFolder);
+        layout.putConstraint(SpringLayout.SOUTH, selectFolder,
+                -5,
+                SpringLayout.SOUTH, CheckoutPanel.this);
+
+        layout.putConstraint(SpringLayout.WEST, selectFolder,
+                5,
+                SpringLayout.EAST, location);
+        layout.putConstraint(SpringLayout.SOUTH, location,
+                -5,
+                SpringLayout.SOUTH, CheckoutPanel.this);
+        layout.putConstraint(SpringLayout.WEST, location,
+                5,
+                SpringLayout.WEST, CheckoutPanel.this);
     }
 
     private void addAllListeners() {
@@ -92,7 +120,20 @@ public class CheckoutPanel extends JPanel {
         });
 
         create.addActionListener(e -> {
-            controller.processFileScriptCreation();
+            controller.processFileScriptCreation(folder, PageChoice.CHECKOUT);
+        });
+
+        selectFolder.addActionListener(e -> {
+            JFileChooser file = new JFileChooser();
+            file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            int result = file.showOpenDialog(controller.getUi());
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                folder = file.getSelectedFile();
+                location.setText(file.getSelectedFile().getPath());
+                create.setEnabled(true);
+            }
         });
     }
 }

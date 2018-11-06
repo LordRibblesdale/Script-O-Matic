@@ -71,6 +71,10 @@ public class Program implements Serializable {
         this.execLocation = execLocation;
     }
 
+    public void setExecLocation(String location) {
+        this.execLocation = new File(location);
+    }
+
     public boolean setDependencies() {
         return hasDependencies;
     }

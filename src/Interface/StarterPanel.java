@@ -52,7 +52,6 @@ public class StarterPanel extends JPanel {
         });
 
         next.addActionListener(e -> {
-            System.out.println(locale.getLanguage());
             controller.setLanguage(ResourceBundle.getBundle("ResourceBundle", locale.getLanguage()));
             controller.askNextPage(PageChoice.FIRST);
             //languages.setEnabled(false);

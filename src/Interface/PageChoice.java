@@ -7,4 +7,5 @@ public interface PageChoice {
     String MM_EDIT = "editScript";
     String MM_LOAD = "loadScript";
     String CHECKOUT = "checkoutPanel";
+    String FINAL = "thanks";
 }

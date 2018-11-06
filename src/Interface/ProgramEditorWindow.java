@@ -78,6 +78,7 @@ public class ProgramEditorWindow extends JDialog {
         addAllListeners();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));
+        pack();
         setLocationRelativeTo(controller.getUi());
         setVisible(true);
     }
@@ -238,7 +239,6 @@ public class ProgramEditorWindow extends JDialog {
             if (result == JFileChooser.APPROVE_OPTION) {
                 fileField.setText(file.getSelectedFile().getPath());
             }
-
         });
     }
 
