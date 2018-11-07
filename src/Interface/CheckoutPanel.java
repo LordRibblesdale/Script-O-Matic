@@ -16,7 +16,11 @@ public class CheckoutPanel extends JPanel {
     private JTextField location;
     private JButton back;
     private JButton create;
+    private JButton install;
     private JButton selectFolder;
+
+    private Program[] exe = null;
+    private String dataLocation;
 
     private File folder;
 
@@ -48,7 +52,7 @@ public class CheckoutPanel extends JPanel {
         create.setEnabled(false);
         selectFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
 
-        setUpLayout();
+        setUpLayoutCreation();
         addAllListeners();
 
         add(intro);
@@ -58,6 +62,43 @@ public class CheckoutPanel extends JPanel {
         add(back);
         add(create);
         add(selectFolder);
+    }
+
+    public CheckoutPanel(Controller controller, Program[] exe, String dataLocation) {
+        this.controller = controller;
+        this.dataLocation = dataLocation;
+
+        setLayout(layout = new SpringLayout());
+
+        programList = new ArrayList<>();
+        programs = new JPanel(new GridLayout(0, 1));
+
+        for (Program p : exe) {
+            programList.add(new JLabel(p.toString()));
+            programs.add(programList.get(programList.size()-1));
+        }
+
+        this.exe = exe;
+
+        intro = new JLabel(controller.getLanguage().getString("listAllPrograms"));
+        //confirm = new JLabel(controller.getLanguage().getString("confirmCreation"));
+        //location = new JTextField(20);
+        //location.setEditable(false);
+        back = new JButton(controller.getLanguage().getString("previousButton"));
+        install = new JButton(controller.getLanguage().getString("installButton"));
+        //create.setEnabled(false);
+        //selectFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
+
+        setUpLayoutInstall();
+        addAllListeners();
+
+        add(intro);
+        add(programs);
+        //add(confirm);
+        //add(location);
+        add(back);
+        add(install);
+        //add(selectFolder);
     }
 
     private void setUpLayout() {
@@ -74,6 +115,10 @@ public class CheckoutPanel extends JPanel {
         layout.putConstraint(SpringLayout.WEST, programs,
                 5,
                 SpringLayout.WEST, CheckoutPanel.this);
+    }
+
+    private void setUpLayoutCreation() {
+        setUpLayout();
 
         layout.putConstraint(SpringLayout.SOUTH, confirm,
                 -5,
@@ -114,6 +159,25 @@ public class CheckoutPanel extends JPanel {
                 SpringLayout.WEST, CheckoutPanel.this);
     }
 
+    private void setUpLayoutInstall() {
+        setUpLayout();
+
+        layout.putConstraint(SpringLayout.EAST, install,
+                -5,
+                SpringLayout.EAST, CheckoutPanel.this);
+        layout.putConstraint(SpringLayout.SOUTH, install,
+                -5,
+                SpringLayout.SOUTH, CheckoutPanel.this);
+
+        layout.putConstraint(SpringLayout.EAST, back,
+                -5,
+                SpringLayout.WEST, install);
+        layout.putConstraint(SpringLayout.SOUTH, back,
+                -5,
+                SpringLayout.SOUTH, CheckoutPanel.this);
+        }
+
+
     private void addAllListeners() {
         back.addActionListener(e -> {
             controller.askPreviousPage(PageChoice.CHECKOUT);
@@ -134,6 +198,10 @@ public class CheckoutPanel extends JPanel {
                 location.setText(file.getSelectedFile().getPath());
                 create.setEnabled(true);
             }
+        });
+
+        install.addActionListener(e -> {
+            controller.startInstallProcess(dataLocation, exe);
         });
     }
 }

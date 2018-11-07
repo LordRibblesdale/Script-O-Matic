@@ -177,6 +177,10 @@ public class Controller {
         status = Status.AVAILABLE;
     }
 
+    public void startInstallProcess(String dataLocation, Program[] exe) {
+
+    }
+
     public void askForRefresh() {
         ui.setUpFrame();
     }

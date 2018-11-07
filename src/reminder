@@ -4,3 +4,5 @@
 3. Create progress page while copying
 4. Allow editing entries
 5. Use borders to delimit
+6. CheckoutPanel should have location and button to open file needed to all programs list
+    and refresh after opening file (without new settings)
