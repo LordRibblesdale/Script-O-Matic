@@ -3,3 +3,4 @@
 2. Every file/directory has to be checked (exists?) before loading file instance process.
 3. Create progress page while copying
 4. Allow editing entries
+5. Use borders to delimit

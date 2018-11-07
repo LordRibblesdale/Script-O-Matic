@@ -13,7 +13,7 @@ public class ProgramTable extends AbstractTableModel {
     private Controller controller;
 
     public ProgramTable(Controller controller) {
-        this.controller = controller;   //TODO is this useful?
+        this.controller = controller;
 
         columns = new String[] {
                 controller.getLanguage().getString("nameProgram"),
@@ -52,6 +52,20 @@ public class ProgramTable extends AbstractTableModel {
 
     public void addProgram(Program exec) {
         data.add(new Object[] {
+                exec.getName(),
+                exec.getExecLocation().getName(),
+                exec.getExecLocation().getAbsolutePath(),
+                exec.getDescription(),
+                exec.getLink()
+        });
+    }
+
+    public Object[] getProgram(int index) {
+        return data.get(index);
+    }
+
+    public void editProgram(int index, Program exec) {
+        data.set(index, new Object[] {
                 exec.getName(),
                 exec.getExecLocation().getName(),
                 exec.getExecLocation().getAbsolutePath(),

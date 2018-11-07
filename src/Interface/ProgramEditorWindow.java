@@ -1,6 +1,7 @@
 package Interface;
 
 import ControlCenter.Controller;
+import ControlCenter.Status;
 import Data.Program;
 
 import javax.swing.*;
@@ -28,12 +29,14 @@ public class ProgramEditorWindow extends JDialog {
     private JLabel isAloneExecLabel;
 
     private Controller controller;
+    private int status;
 
     private SpringLayout layout;
 
     ProgramEditorWindow(Controller controller) {
         super(controller.getUi(), controller.getLanguage().getString("programWindow"), true);
         this.controller = controller;
+        this.status = Status.CREATING;
 
         setLayout(layout = new SpringLayout());
 
@@ -51,6 +54,61 @@ public class ProgramEditorWindow extends JDialog {
         save = new JButton(controller.getLanguage().getString("saveButton"));
 
         isAloneExec = new JCheckBox();
+
+        fileLabel = new JLabel(controller.getLanguage().getString("fileField"));
+        nameLabel = new JLabel(controller.getLanguage().getString("nameField"));
+        descriptionLabel = new JLabel(controller.getLanguage().getString("descriptionField"));
+        linkLabel = new JLabel(controller.getLanguage().getString("linkField"));
+        isAloneExecLabel = new JLabel(controller.getLanguage().getString("isAloneLabel"));
+
+        add(fileField);
+        add(nameField);
+        add(descriptionField);
+        add(linkField);
+        add(openFile);
+        add(openFolder);
+        add(addExtras);
+        add(back);
+        add(save);
+        add(isAloneExec);
+        add(fileLabel);
+        add(nameLabel);
+        add(descriptionLabel);
+        add(linkLabel);
+        add(isAloneExecLabel);
+
+        setUpLayout();
+        addAllListeners();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setMinimumSize(new Dimension(500, 400));
+        pack();
+        setLocationRelativeTo(controller.getUi());
+        setVisible(true);
+    }
+
+    ProgramEditorWindow(Controller controller, String location, String pName, String pDescription,
+                        String pLink, boolean hasDependencies) {
+        super(controller.getUi(), controller.getLanguage().getString("programWindow"), true);
+        this.controller = controller;
+        this.status = Status.EDITING;
+
+        setLayout(layout = new SpringLayout());
+
+        fileField = new JTextField(location, 25);
+        fileField.setEditable(false);
+
+        nameField = new JTextField(pName, 15);
+        descriptionField = new JTextField(pDescription, 20);
+        linkField = new JTextField(pLink, 15);
+
+        openFile = new JButton(controller.getLanguage().getString("openButton"));
+        openFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
+        addExtras = new JButton(controller.getLanguage().getString("addExtrasButton"));
+        back = new JButton(controller.getLanguage().getString("discardButton"));
+        save = new JButton(controller.getLanguage().getString("saveButton"));
+
+        isAloneExec = new JCheckBox();
+        isAloneExec.setSelected(hasDependencies);
 
         fileLabel = new JLabel(controller.getLanguage().getString("fileField"));
         nameLabel = new JLabel(controller.getLanguage().getString("nameField"));
@@ -243,30 +301,59 @@ public class ProgramEditorWindow extends JDialog {
     }
 
     private void createProgramInstance(File file) {
-        try {
-            controller.processProgramCreation(new Program(
-                    nameField.getText(),
-                    descriptionField.getText(),
-                    !linkField.getText().equals("") ? new URL(linkField.getText()) : null,
-                    file,
-                    isAloneExec.isSelected()
-            ));
-        } catch (MalformedURLException e1) {
-            JOptionPane.showMessageDialog(ProgramEditorWindow.this,
-                    controller.getLanguage().getString("urlException"),
-                    controller.getLanguage().getString("exception"),
-                    JOptionPane.INFORMATION_MESSAGE);
-            controller.processProgramCreation(new Program(
-                    nameField.getText(),
-                    descriptionField.getText(),
-                    null,
-                    file,
-                    isAloneExec.isSelected()
-            ));
-        } finally {
-            dispose();
+        if (status == Status.CREATING) {
+            try {
+                controller.processProgramCreation(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        !linkField.getText().equals("") ? new URL(linkField.getText()) : null,
+                        file,
+                        isAloneExec.isSelected()
+                ));
+            } catch (MalformedURLException e1) {
+                JOptionPane.showMessageDialog(ProgramEditorWindow.this,
+                        controller.getLanguage().getString("urlException"),
+                        controller.getLanguage().getString("exception"),
+                        JOptionPane.INFORMATION_MESSAGE);
+                controller.processProgramCreation(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        null,
+                        file,
+                        isAloneExec.isSelected()
+                ));
+            } finally {
+                dispose();
 
-            controller.getUi().getTableList().enableNext();
+                controller.getUi().getTableList().enableNext(); //TODO fix here
+            }
+        } else if (status == Status.EDITING) {
+            try {
+                controller.processProgramModify(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        !linkField.getText().equals("") ? new URL(linkField.getText()) : null,
+                        file,
+                        isAloneExec.isSelected()
+                ));
+            } catch (MalformedURLException e1) {
+                JOptionPane.showMessageDialog(ProgramEditorWindow.this,
+                        controller.getLanguage().getString("urlException"),
+                        controller.getLanguage().getString("exception"),
+                        JOptionPane.INFORMATION_MESSAGE);
+                controller.processProgramModify(new Program(
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        null,
+                        file,
+                        isAloneExec.isSelected()
+                ));
+            } finally {
+                dispose();
+
+                controller.getUi().getTableList().enableNext(); //TODO fix here
+            }
+
         }
     }
 }

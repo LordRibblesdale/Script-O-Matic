@@ -96,6 +96,13 @@ public class Controller {
         //askForRefresh();
     }
 
+    public void processProgramModify(Program exec) {
+        int index = getUi().getTableList().getTable().getSelectedRow();
+        executables.set(index, exec);
+        ui.getTableList().getModelTable().editProgram(index, exec);
+        ui.getTableList().getModelTable().fireTableDataChanged();
+    }
+
     public void processProgramDeletion() {
         if (!executables.isEmpty()) {
             int index = ui.getTableList().getTable().getSelectedRow();

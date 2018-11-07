@@ -15,6 +15,7 @@ public class Interface extends JFrame {
     private CheckoutPanel checkoutPanel = null;
 
     public Interface() {
+        super("Script'o'Matic");
         setLayout(layout = new CardLayout());
 
         controller = new Controller(Interface.this);

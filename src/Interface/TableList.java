@@ -4,6 +4,9 @@ import ControlCenter.Controller;
 import Data.Program;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TableList extends JPanel {
     private JScrollPane scrollPane;
@@ -40,6 +43,7 @@ public class TableList extends JPanel {
 
         table = new JTable(modelTable);
         scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(BorderFactory.createTitledBorder(controller.getLanguage().getString("insertProgramTitle")));  //TODO finish here
 
         add(scrollPane);
         add(back);
@@ -140,6 +144,30 @@ public class TableList extends JPanel {
 
         removeAll.addActionListener(e -> {
             controller.processCleaningTable();
+        });
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (scrollPane.contains(e.getPoint())) {
+                    if (e.getClickCount() == 2) {
+                        int index = controller.getUi().getTableList().getTable().getSelectedRow();
+
+                        if (index != -1) {
+                            Object[] data = controller.getUi().getTableList().getModelTable().getProgram(index);
+
+                            new ProgramEditorWindow(
+                                    controller,
+                                    (String) data[2],
+                                    (String) data[0],
+                                    (String) data[3],
+                                    (String) data[4],
+                                    controller.getExecutables().get(index).hasDependencies()
+                            );
+                        }
+                    }
+                }
+            }
         });
     }
 }
