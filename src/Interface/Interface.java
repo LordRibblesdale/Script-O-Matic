@@ -41,8 +41,12 @@ public class Interface extends JFrame {
                 add(tableList, PageChoice.MM_INSTALLER);
                 break;
             case PageChoice.CHECKOUT:
-                checkoutPanel = new CheckoutPanel(controller);
+                checkoutPanel = new CheckoutPanel(controller, true);
                 add(checkoutPanel, PageChoice.CHECKOUT);
+                break;
+            case PageChoice.CHK_INSTALL:
+                checkoutPanel = new CheckoutPanel(controller, false);
+                add(checkoutPanel, PageChoice.CHK_INSTALL);
                 break;
             case PageChoice.FINAL:
                 JPanel p = new JPanel();
@@ -71,5 +75,9 @@ public class Interface extends JFrame {
 
     public TableList getTableList() {
         return tableList;
+    }
+
+    public CheckoutPanel getCheckoutPanel() {
+        return checkoutPanel;
     }
 }

@@ -4,7 +4,6 @@ import ControlCenter.Controller;
 import Data.Program;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
