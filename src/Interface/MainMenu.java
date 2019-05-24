@@ -3,14 +3,13 @@ package Interface;
 import ControlCenter.Controller;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class MainMenu extends JPanel {
-    private ArrayList<JRadioButton> list;
-    private ButtonGroup bg;
+    private ArrayList<JButton> list;
     private JPanel panel;
-    private JButton next;
     private JButton previous;
 
     private SpringLayout layout;
@@ -41,27 +40,22 @@ public class MainMenu extends JPanel {
         };
 
         list = new ArrayList<>(3);
-        bg = new ButtonGroup();
         panel = new JPanel(new GridLayout(0, 1));
+        panel.setBorder(new CompoundBorder(
+                BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                BorderFactory.createTitledBorder(controller.getLanguage().getString("chooseAction")
+                )));
 
         for (String s : text) {
-            list.add(new JRadioButton(s));
-            bg.add(list.get(list.size()-1));
+            list.add(new JButton(s));
+            list.get(list.size()-1).addActionListener(e -> {
+
+                controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]);
+            });
             panel.add(list.get(list.size()-1));
         }
 
-        list.get(0).setSelected(true);
-
-        next = new JButton(controller.getLanguage().getString("nextButton"));
         previous = new JButton(controller.getLanguage().getString("previousButton"));
-
-        next.addActionListener(e -> {
-            for (int i = 0; i < text.length; i++) {
-                if (list.get(i).isSelected()) {
-                    controller.askNextPage(PageChoice.MAIN_MENU, pages[i]);
-                }
-            }
-        });
 
         previous.addActionListener(e -> {
             controller.askPreviousPage(PageChoice.MAIN_MENU);
@@ -69,7 +63,6 @@ public class MainMenu extends JPanel {
 
         add(panel);
         add(previous);
-        add(next);
 
         layout.putConstraint(SpringLayout.NORTH, panel,
                 5,
@@ -85,11 +78,13 @@ public class MainMenu extends JPanel {
                 -5,
                 SpringLayout.SOUTH, MainMenu.this);
 
+        /*
         layout.putConstraint(SpringLayout.EAST, next,
                 -5,
                 SpringLayout.EAST, MainMenu.this);
         layout.putConstraint(SpringLayout.SOUTH, next,
                 -5,
                 SpringLayout.SOUTH, MainMenu.this);
+        */
     }
 }

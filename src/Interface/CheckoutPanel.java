@@ -110,16 +110,18 @@ public class CheckoutPanel extends JPanel {
                 -5,
                 SpringLayout.SOUTH, CheckoutPanel.this);
 
-        layout.putConstraint(SpringLayout.WEST, back,
-                5,
-                SpringLayout.EAST, selectFolder);
+
+        layout.putConstraint(SpringLayout.EAST, selectFolder,
+                -5,
+                SpringLayout.WEST, back);
+
         layout.putConstraint(SpringLayout.SOUTH, selectFolder,
                 -5,
                 SpringLayout.SOUTH, CheckoutPanel.this);
 
-        layout.putConstraint(SpringLayout.WEST, selectFolder,
-                5,
-                SpringLayout.EAST, location);
+        layout.putConstraint(SpringLayout.EAST, location,
+                -5,
+                SpringLayout.WEST, selectFolder);
         layout.putConstraint(SpringLayout.SOUTH, location,
                 -5,
                 SpringLayout.SOUTH, CheckoutPanel.this);

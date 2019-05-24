@@ -6,7 +6,6 @@ import Interface.Interface;
 import Interface.PageChoice;
 import org.apache.commons.io.FileUtils;
 
-import java.awt.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,6 +30,7 @@ public class Controller {
         this.initialisedCards = new ArrayList<>(1);
         this.windows = new Stack<>();
         this.executables = new ArrayList<>(1);
+        this.language = ResourceBundle.getBundle("ResourceBundle", Language.ENGLISH.getLanguage());
 
         initialisedCards.add(PageChoice.FIRST);
         windows.add(PageChoice.FIRST);
@@ -48,7 +48,7 @@ public class Controller {
                 initialisedCards.add(nextCard);
             }
 
-            ui.getLayout().show(ui.getContentPane(), nextCard);
+            ui.getLayout().show(ui.getFrame(), nextCard);
             currentCard = nextCard;
         }
     }
@@ -65,7 +65,7 @@ public class Controller {
                 initialisedCards.add(nextCard);
             }
 
-            ui.getLayout().show(ui.getContentPane(), nextCard);
+            ui.getLayout().show(ui.getFrame(), nextCard);
             askForLargerWindow();
             currentCard = nextCard;
         }
@@ -75,7 +75,7 @@ public class Controller {
         if (currentCard.equals(fromCard)) {
             if (status != Status.BUSY) {
                 String previousCard = previousCard();
-                ui.getLayout().show(ui.getContentPane(), previousCard);
+                ui.getLayout().show(ui.getFrame(), previousCard);
                 currentCard = previousCard;
             }
         }

@@ -4,6 +4,7 @@ import ControlCenter.Language;
 import ControlCenter.Controller;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.util.ResourceBundle;
 
@@ -12,11 +13,6 @@ public class StarterPanel extends JPanel {
     private JPanel welcome;
     private JComboBox<Language> languages;
     private JButton next;
-
-    private final String[] text = {
-            "Welcome to Script'o'Matic.",
-            "Choose a language to continue:"
-    };
 
     private final Language[] locales = {
             Language.ENGLISH,
@@ -31,15 +27,14 @@ public class StarterPanel extends JPanel {
         this.controller = controller;
 
         setLayout(layout = new SpringLayout());
+        setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                BorderFactory.createTitledBorder(controller.getLanguage().getString("welcome"))));
 
         welcome = new JPanel(new GridLayout(0, 1));
+
         languages = new JComboBox<>(locales);
         next = new JButton("Next");
         locale = locales[0];
-
-        for (String s : text) {
-            welcome.add(new JLabel(s));
-        }
 
         languages.addActionListener(e -> {
             if (e.getSource() instanceof JComboBox) {
@@ -61,16 +56,9 @@ public class StarterPanel extends JPanel {
         add(languages);
         add(next);
 
-        layout.putConstraint(SpringLayout.NORTH, welcome,
-                5,
-                SpringLayout.NORTH, StarterPanel.this);
-        layout.putConstraint(SpringLayout.WEST, welcome,
-                5,
-                SpringLayout.WEST, StarterPanel.this);
-
         layout.putConstraint(SpringLayout.NORTH, languages,
                 5,
-                SpringLayout.SOUTH, welcome);
+                SpringLayout.NORTH, StarterPanel.this);
         layout.putConstraint(SpringLayout.WEST, languages,
                 5,
                 SpringLayout.WEST, StarterPanel.this);

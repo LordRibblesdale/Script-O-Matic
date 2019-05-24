@@ -9,6 +9,8 @@ public class Interface extends JFrame {
     private Controller controller;
     private CardLayout layout;
 
+    private JPanel frame;
+
     private StarterPanel first;
     private MainMenu mainMenu = null;
     private TableList tableList = null;
@@ -16,13 +18,17 @@ public class Interface extends JFrame {
 
     public Interface() {
         super("Script'o'Matic");
-        setLayout(layout = new CardLayout());
+
+        frame = new JPanel(layout = new CardLayout());
+        frame.setBorder(BorderFactory.createEmptyBorder());
 
         controller = new Controller(Interface.this);
 
         first = new StarterPanel(controller);
 
-        add(first, PageChoice.FIRST);
+        frame.add(first, PageChoice.FIRST);
+
+        add(frame);
 
         setMinimumSize(new Dimension(250, 250));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);    //TODO add warning
@@ -34,24 +40,24 @@ public class Interface extends JFrame {
         switch (card) {
             case PageChoice.MAIN_MENU:
                 mainMenu = new MainMenu(controller);
-                add(mainMenu, PageChoice.MAIN_MENU);
+                frame.add(mainMenu, PageChoice.MAIN_MENU);
                 break;
             case PageChoice.MM_INSTALLER:
                 tableList = new TableList(controller, PageChoice.MM_INSTALLER, null);
-                add(tableList, PageChoice.MM_INSTALLER);
+                frame.add(tableList, PageChoice.MM_INSTALLER);
                 break;
             case PageChoice.CHECKOUT:
                 checkoutPanel = new CheckoutPanel(controller, true);
-                add(checkoutPanel, PageChoice.CHECKOUT);
+                frame.add(checkoutPanel, PageChoice.CHECKOUT);
                 break;
             case PageChoice.CHK_INSTALL:
                 checkoutPanel = new CheckoutPanel(controller, false);
-                add(checkoutPanel, PageChoice.CHK_INSTALL);
+                frame.add(checkoutPanel, PageChoice.CHK_INSTALL);
                 break;
             case PageChoice.FINAL:
                 JPanel p = new JPanel();
                 p.add(new JLabel("TEMPORARY END"));
-                add(p, PageChoice.FINAL);
+                frame.add(p, PageChoice.FINAL);
                 break;
         }
     }
@@ -79,5 +85,9 @@ public class Interface extends JFrame {
 
     public CheckoutPanel getCheckoutPanel() {
         return checkoutPanel;
+    }
+
+    public JPanel getFrame() {
+        return frame;
     }
 }
