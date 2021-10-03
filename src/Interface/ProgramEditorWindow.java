@@ -10,6 +10,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 public class ProgramEditorWindow extends JDialog {
     private JTextField fileField;
@@ -268,7 +269,7 @@ public class ProgramEditorWindow extends JDialog {
                 }
             } else {
                 JOptionPane.showMessageDialog(ProgramEditorWindow.this,
-                        fileField.getText().equals("") ?
+                        Objects.equals(fileField.getText(), "") ?
                                 controller.getLanguage().getString("fileNameEmpty") :
                                 controller.getLanguage().getString("programNameEmpty"),
                         controller.getLanguage().getString("exception"),

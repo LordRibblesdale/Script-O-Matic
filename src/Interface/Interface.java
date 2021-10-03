@@ -38,27 +38,27 @@ public class Interface extends JFrame {
 
     public void initialiseCard(String card) {
         switch (card) {
-            case PageChoice.MAIN_MENU:
+            case PageChoice.MAIN_MENU -> {
                 mainMenu = new MainMenu(controller);
                 frame.add(mainMenu, PageChoice.MAIN_MENU);
-                break;
-            case PageChoice.MM_INSTALLER:
+            }
+            case PageChoice.MM_INSTALLER -> {
                 tableList = new TableList(controller, PageChoice.MM_INSTALLER, null);
                 frame.add(tableList, PageChoice.MM_INSTALLER);
-                break;
-            case PageChoice.CHECKOUT:
+            }
+            case PageChoice.CHECKOUT -> {
                 checkoutPanel = new CheckoutPanel(controller, true);
                 frame.add(checkoutPanel, PageChoice.CHECKOUT);
-                break;
-            case PageChoice.CHK_INSTALL:
+            }
+            case PageChoice.CHK_INSTALL -> {
                 checkoutPanel = new CheckoutPanel(controller, false);
                 frame.add(checkoutPanel, PageChoice.CHK_INSTALL);
-                break;
-            case PageChoice.FINAL:
+            }
+            case PageChoice.FINAL -> {
                 JPanel p = new JPanel();
                 p.add(new JLabel("TEMPORARY END"));
                 frame.add(p, PageChoice.FINAL);
-                break;
+            }
         }
     }
 

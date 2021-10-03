@@ -37,9 +37,7 @@ public class StarterPanel extends JPanel {
         locale = locales[0];
 
         languages.addActionListener(e -> {
-            if (e.getSource() instanceof JComboBox) {
-                JComboBox<?> tmp = (JComboBox<?>) e.getSource();
-
+            if (e.getSource() instanceof JComboBox<?> tmp) {
                 if (tmp.getSelectedItem() instanceof Language) {
                     locale = (Language) tmp.getSelectedItem();
                 }
