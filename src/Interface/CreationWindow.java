@@ -1,14 +1,9 @@
 package Interface;
 
 import ControlCenter.Controller;
-import Data.Program;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class CreationWindow extends JDialog {
     private JButton abort;
@@ -23,16 +18,16 @@ public class CreationWindow extends JDialog {
     private SpringLayout layout;
 
     CreationWindow(Controller controller) {
-        super(controller.getUi(), controller.getLanguage().getString("programWindow"), true);
+        super(Controller.getUI(), Controller.getLanguageString("programWindow"), true);
         this.controller = controller;
 
         setLayout(layout = new SpringLayout());
 
-        fileLabel = new JLabel(controller.getLanguage().getString("fileField"));
-        nameLabel = new JLabel(controller.getLanguage().getString("nameField"));
-        descriptionLabel = new JLabel(controller.getLanguage().getString("descriptionField"));
-        linkLabel = new JLabel(controller.getLanguage().getString("linkField"));
-        isAloneExecLabel = new JLabel(controller.getLanguage().getString("isAloneLabel"));
+        fileLabel = new JLabel(Controller.getLanguageString("fileField"));
+        nameLabel = new JLabel(Controller.getLanguageString("nameField"));
+        descriptionLabel = new JLabel(Controller.getLanguageString("descriptionField"));
+        linkLabel = new JLabel(Controller.getLanguageString("linkField"));
+        isAloneExecLabel = new JLabel(Controller.getLanguageString("isAloneLabel"));
 
         add(fileLabel);
         add(nameLabel);
@@ -45,7 +40,7 @@ public class CreationWindow extends JDialog {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));
         pack();
-        setLocationRelativeTo(controller.getUi());
+        setLocationRelativeTo(Controller.getUI());
         setVisible(true);
     }
 

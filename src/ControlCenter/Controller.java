@@ -11,114 +11,114 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Controller {
-    private ResourceBundle language;
+    private static Interface ui;
 
-    private Interface ui;
-    private String currentCard;
-    private ArrayList<String> initialisedCards;
-    private Stack<String> windows;
+    private static ResourceBundle language;
 
-    private ArrayList<Program> executables;
+    private static String currentCard;
+    private static ArrayList<String> initialisedCards;
+    private static Stack<String> windows;
+
+    private static ArrayList<Program> executables;
     private String dataLocation;
 
-    private int status;
+    private static int status;
 
-    public Controller(Interface ui) {
-        this.ui = ui;
-        this.currentCard = PageChoice.FIRST;
-        this.status = Status.AVAILABLE;
-        this.initialisedCards = new ArrayList<>(1);
-        this.windows = new Stack<>();
-        this.executables = new ArrayList<>(1);
-        this.language = ResourceBundle.getBundle("ResourceBundle", Language.ENGLISH.getLanguage());
+    public static void initialise() {
+        currentCard = PageChoice.FIRST;
+        status = Status.AVAILABLE;
+        initialisedCards = new ArrayList<>(1);
+        windows = new Stack<>();
+        executables = new ArrayList<>(1);
+        language = ResourceBundle.getBundle("ResourceBundle", Language.ENGLISH.getLanguage());
+        ui = new Interface();
 
         initialisedCards.add(PageChoice.FIRST);
         windows.add(PageChoice.FIRST);
     }
 
-    public void askNextPage(String fromCard) {
+    public static void askNextPage(String fromCard) {
         if (currentCard.equals(fromCard)) {
             windows.add(fromCard);
 
             String nextCard = nextCard();
 
-            ui.initialiseCard(nextCard);
+            Interface.initialiseCard(nextCard);
 
             if (!initialisedCards.contains(nextCard)) {
                 initialisedCards.add(nextCard);
             }
 
-            ui.getLayout().show(ui.getFrame(), nextCard);
+            Interface.showLayoutCard(nextCard);
             currentCard = nextCard;
         }
     }
 
-    public void askNextPage(String fromCard, String choice) {
+    public static void setLanguage(ResourceBundle resourceBundle) {
+        language = resourceBundle;
+    }
+
+    public static void askNextPage(String fromCard, String choice) {
         if (currentCard.equals(fromCard)) {
             windows.add(fromCard);
 
             String nextCard = nextCard(choice);
 
-            ui.initialiseCard(nextCard);
+            Interface.initialiseCard(nextCard);
 
             if (!initialisedCards.contains(nextCard)) {
                 initialisedCards.add(nextCard);
             }
 
-            ui.getLayout().show(ui.getFrame(), nextCard);
+            Interface.showLayoutCard(nextCard);
             askForLargerWindow();
             currentCard = nextCard;
         }
     }
 
-    public void askPreviousPage(String fromCard) {
+    public static void askPreviousPage(String fromCard) {
         if (currentCard.equals(fromCard)) {
             if (status != Status.BUSY) {
                 String previousCard = previousCard();
-                ui.getLayout().show(ui.getFrame(), previousCard);
+                Interface.showLayoutCard(previousCard);
                 currentCard = previousCard;
             }
         }
     }
 
-    public void processProgramCreation(Program exec) {
+    public static void processProgramCreation(Program exec) {
         executables.add(exec);
-
-        ui.getTableList().getModelTable().addProgram(exec);
-        ui.getTableList().getModelTable().fireTableDataChanged();
+        Interface.addProgramToTable(exec);
     }
 
-    public void processProgramModify(Program exec) {
-        int index = getUi().getTableList().getTable().getSelectedRow();
+    public static void processProgramModify(Program exec) {
+        int index = Interface.getTableSelectedRow();
         executables.set(index, exec);
-        ui.getTableList().getModelTable().editProgram(index, exec);
-        ui.getTableList().getModelTable().fireTableDataChanged();
+        Interface.editProgramInsideTable(index, exec);
     }
 
-    public void processProgramDeletion() {
+    public static void processProgramDeletion() {
         if (!executables.isEmpty()) {
-            int index = ui.getTableList().getTable().getSelectedRow();
+            int index = Interface.getTableSelectedRow();
 
             if (index != -1) {
-                ui.getTableList().getModelTable().removeProgram(index);
-                ui.getTableList().getModelTable().fireTableDataChanged();
+                Interface.removeProgramFromTable(index);
 
                 executables.remove(index);
                 if (executables.isEmpty()) {
-                    ui.getTableList().disableNext();
+                    Interface.disableNext();
                 }
             }
         }
     }
 
-    public void processCleaningTable() {
+    public static void processCleaningTable() {
         executables.clear();
-        ui.getTableList().getModelTable().removeAllPrograms();
-        ui.getTableList().getModelTable().fireTableDataChanged();
-        ui.getTableList().disableNext();
+        Interface.removeAllProgramsFromTable();
+        Interface.disableNext();
     }
 
-    public void processFileScriptCreation(File folder, String fromCard) {
+    public static void processFileScriptCreation(File folder, String fromCard) {
         Script script = null;
         ObjectOutputStream out = null;
         File data = new File(folder.getPath() + File.separator + "DATA");
@@ -174,7 +174,7 @@ public class Controller {
         status = Status.AVAILABLE;
     }
 
-    public void prepareProgramArray(File somFile) {
+    public static void prepareProgramArray(File somFile) {
         try {
             ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(somFile)));
             Script som;
@@ -199,7 +199,7 @@ public class Controller {
 
     }
 
-    public void startInstallProcess() {
+    public static void startInstallProcess() {
         for (Program p : executables) {
             try {
                 if (p.getExecLocation().isDirectory()) {
@@ -226,43 +226,33 @@ public class Controller {
         }
     }
 
-    public void askForRefresh() {
+    public static void askForRefresh() {
         ui.setUpFrame();
     }
 
-    public void askForLargerWindow() {
+    public static void askForLargerWindow() {
         ui.enlargeWindow();
     }
 
-    public ResourceBundle getLanguage() {
-        return language;
-    }
-
-    public Interface getUi() {
+    public static Interface getUI() {
         return ui;
     }
 
-    public ArrayList<Program> getExecutables() {
-        return executables;
+    public static Program getExecutableFromList(int index) {
+        return executables.get(index);
     }
 
-    public void setLanguage(ResourceBundle language) {
-        this.language = language;
-    }
-
-    private String nextCard() {
-        String nextCard = switch (currentCard) {
+    private static String nextCard() {
+        return switch (currentCard) {
             case PageChoice.FIRST -> PageChoice.MAIN_MENU;
             case PageChoice.MM_INSTALLER -> PageChoice.CHECKOUT;
             case PageChoice.MM_LOAD -> PageChoice.CHK_INSTALL;
             case PageChoice.CHECKOUT, PageChoice.CHK_INSTALL -> PageChoice.FINAL;
             default -> null;
         };
-
-        return nextCard;
     }
 
-    private String nextCard(String choice) {
+    private static String nextCard(String choice) {
         String nextCard = null;
 
         switch (currentCard) {
@@ -277,7 +267,16 @@ public class Controller {
         return nextCard;
     }
 
-    private String previousCard() {
+    private static String previousCard() {
         return windows.pop();
+    }
+
+    public static String getLanguageString(String key) {
+        return language.getString(key);
+    }
+
+    // TODO remove access to array
+    public static ArrayList<Program> getExecutables() {
+        return executables;
     }
 }

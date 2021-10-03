@@ -10,31 +10,26 @@ public class ProgramTable extends AbstractTableModel {
     private String[] columns;
     private ArrayList<Object[]> data;
 
-    private Controller controller;
-
-    public ProgramTable(Controller controller) {
-        this.controller = controller;
+    public ProgramTable() {
 
         columns = new String[] {
-                controller.getLanguage().getString("nameProgram"),
-                controller.getLanguage().getString("executableFile"),
-                controller.getLanguage().getString("absoluteLocation"),
-                controller.getLanguage().getString("descriptionProgram"),
-                controller.getLanguage().getString("urlProgram")
+                Controller.getLanguageString("nameProgram"),
+                Controller.getLanguageString("executableFile"),
+                Controller.getLanguageString("absoluteLocation"),
+                Controller.getLanguageString("descriptionProgram"),
+                Controller.getLanguageString("urlProgram")
         };
 
         data = new ArrayList<>(1);
     }
 
-    public ProgramTable(Controller controller, Program[] exec) {
-        this.controller = controller;   //TODO is this useful?
-
+    public ProgramTable(Program[] exec) {
         columns = new String[] {
-                controller.getLanguage().getString("nameProgram"),
-                controller.getLanguage().getString("executableFile"),
-                controller.getLanguage().getString("absoluteLocation"),
-                controller.getLanguage().getString("descriptionProgram"),
-                controller.getLanguage().getString("urlProgram")
+                Controller.getLanguageString("nameProgram"),
+                Controller.getLanguageString("executableFile"),
+                Controller.getLanguageString("absoluteLocation"),
+                Controller.getLanguageString("descriptionProgram"),
+                Controller.getLanguageString("urlProgram")
         };
 
         data = new ArrayList<>(exec.length);
@@ -58,10 +53,8 @@ public class ProgramTable extends AbstractTableModel {
                 exec.getDescription(),
                 exec.getLink()
         });
-    }
 
-    public Object[] getProgram(int index) {
-        return data.get(index);
+        fireTableDataChanged();;
     }
 
     public void editProgram(int index, Program exec) {
@@ -72,16 +65,25 @@ public class ProgramTable extends AbstractTableModel {
                 exec.getDescription(),
                 exec.getLink()
         });
+
+        fireTableDataChanged();
     }
 
     public void removeProgram(int index) {
         if (!data.isEmpty() && index != -1) {
             data.remove(index);
         }
+
+        fireTableDataChanged();
     }
 
     public void removeAllPrograms() {
         data.clear();
+        fireTableDataChanged();
+    }
+
+    public Object[] getProgram(int index) {
+        return data.get(index);
     }
 
     @Override

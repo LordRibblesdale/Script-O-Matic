@@ -15,34 +15,32 @@ public class TableList extends JPanel {
     private JButton add, remove, removeAll;
     private SpringLayout layout;
 
-    private Controller controller;
     private String currentCard;
 
-    TableList(Controller controller, String currentCard, Program[] exec) {
-        this.controller = controller;
+    TableList(String currentCard, Program[] exec) {
         this.currentCard = currentCard;
 
         setLayout(layout = new SpringLayout());
 
-        back = new JButton(controller.getLanguage().getString("previousButton"));
-        next = new JButton(controller.getLanguage().getString("nextButton"));
+        back = new JButton(Controller.getLanguageString("previousButton"));
+        next = new JButton(Controller.getLanguageString("nextButton"));
         next.setEnabled(false);
 
-        add = new JButton(controller.getLanguage().getString("addEntry"));
-        remove = new JButton(controller.getLanguage().getString("removeSelectedEntry"));
-        removeAll = new JButton(controller.getLanguage().getString("removeAllEntries"));
+        add = new JButton(Controller.getLanguageString("addEntry"));
+        remove = new JButton(Controller.getLanguageString("removeSelectedEntry"));
+        removeAll = new JButton(Controller.getLanguageString("removeAllEntries"));
         remove.setEnabled(false);
         removeAll.setEnabled(false);
 
         if (exec != null) {
-            modelTable = new ProgramTable(controller, exec);
+            modelTable = new ProgramTable(exec);
         } else {
-            modelTable = new ProgramTable(controller);
+            modelTable = new ProgramTable();
         }
 
         table = new JTable(modelTable);
         scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createTitledBorder(controller.getLanguage().getString("insertProgramTitle")));  //TODO finish here
+        scrollPane.setBorder(BorderFactory.createTitledBorder(Controller.getLanguageString("insertProgramTitle")));  //TODO finish here
 
         add(scrollPane);
         add(back);
@@ -67,14 +65,14 @@ public class TableList extends JPanel {
         next.setEnabled(true);
         remove.setEnabled(true);
         removeAll.setEnabled(true);
-        controller.askForRefresh();
+        Controller.askForRefresh();
     }
 
     public void disableNext() {
         next.setEnabled(false);
         remove.setEnabled(false);
         removeAll.setEnabled(false);
-        controller.askForRefresh();
+        Controller.askForRefresh();
     }
 
     private void setUpLayout() {
@@ -126,23 +124,23 @@ public class TableList extends JPanel {
 
     private void addAllListeners() {
         back.addActionListener(e -> {
-            controller.askPreviousPage(currentCard);
+            Controller.askPreviousPage(currentCard);
         });
 
         next.addActionListener(e -> {
-            controller.askNextPage(currentCard);
+            Controller.askNextPage(currentCard);
         });
 
         add.addActionListener(e -> {
-            new ProgramEditorWindow(controller);
+            new ProgramEditorWindow();
         });
 
         remove.addActionListener(e -> {
-            controller.processProgramDeletion();
+            Controller.processProgramDeletion();
         });
 
         removeAll.addActionListener(e -> {
-            controller.processCleaningTable();
+            Controller.processCleaningTable();
         });
 
         table.addMouseListener(new MouseAdapter() {
@@ -150,18 +148,18 @@ public class TableList extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (scrollPane.contains(e.getPoint())) {
                     if (e.getClickCount() == 2) {
-                        int index = controller.getUi().getTableList().getTable().getSelectedRow();
+                        int index = Interface.getTableSelectedRow();
 
                         if (index != -1) {
-                            Object[] data = controller.getUi().getTableList().getModelTable().getProgram(index);
+                            // TODO move object collection methods to Controller instead of Interface (UI should not do this)
+                            Object[] data = Interface.getProgramFromTable(index);
 
                             new ProgramEditorWindow(
-                                    controller,
                                     (String) data[2],
                                     (String) data[0],
                                     (String) data[3],
                                     (String) data[4],
-                                    controller.getExecutables().get(index).hasDependencies()
+                                    Controller.getExecutableFromList(index).hasDependencies()
                             );
                         }
                     }
