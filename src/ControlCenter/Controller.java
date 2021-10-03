@@ -251,24 +251,13 @@ public class Controller {
     }
 
     private String nextCard() {
-        String nextCard = null;
-
-        switch (currentCard) {
-            case PageChoice.FIRST:
-                nextCard = PageChoice.MAIN_MENU;
-                break;
-            case PageChoice.MM_INSTALLER:
-                nextCard = PageChoice.CHECKOUT;
-                break;
-            case PageChoice.MM_LOAD:
-                nextCard = PageChoice.CHK_INSTALL;
-                break;
-            case PageChoice.CHECKOUT:
-            case PageChoice.CHK_INSTALL:
-                nextCard = PageChoice.FINAL;
-                break;
-
-        }
+        String nextCard = switch (currentCard) {
+            case PageChoice.FIRST -> PageChoice.MAIN_MENU;
+            case PageChoice.MM_INSTALLER -> PageChoice.CHECKOUT;
+            case PageChoice.MM_LOAD -> PageChoice.CHK_INSTALL;
+            case PageChoice.CHECKOUT, PageChoice.CHK_INSTALL -> PageChoice.FINAL;
+            default -> null;
+        };
 
         return nextCard;
     }
@@ -279,13 +268,8 @@ public class Controller {
         switch (currentCard) {
             case PageChoice.MAIN_MENU:
                 switch (choice) {
-                    case PageChoice.MM_INSTALLER:
-                    case PageChoice.MM_EDIT:
-                        nextCard = choice;
-                        break;
-                    case PageChoice.MM_LOAD:
-                        nextCard = PageChoice.CHK_INSTALL;
-                        break;
+                    case PageChoice.MM_INSTALLER, PageChoice.MM_EDIT -> nextCard = choice;
+                    case PageChoice.MM_LOAD -> nextCard = PageChoice.CHK_INSTALL;
                 }
                 break;
         }
