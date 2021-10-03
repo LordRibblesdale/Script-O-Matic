@@ -1,0 +1,8 @@
+1. When opening a file and one file selected is a folder, open every file inside the folder
+    (the folder should be asked before)
+2. Every file/directory has to be checked (exists?) before loading file instance process.
+3. Create progress page while copying
+4. Allow editing entries
+5. Use borders to delimit
+6. CheckoutPanel should have location and button to open file needed to all programs list
+    and refresh after opening file (without new settings)

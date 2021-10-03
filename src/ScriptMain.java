@@ -1,3 +1,4 @@
+import ControlCenter.Controller;
 import Interface.Interface;
 
 import javax.swing.*;
@@ -10,6 +11,6 @@ public class ScriptMain {
             e.printStackTrace();
         }
 
-        new Interface();
+        Controller.initialise();
     }
 }

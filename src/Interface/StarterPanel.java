@@ -21,14 +21,10 @@ public class StarterPanel extends JPanel {
 
     private Language locale;
 
-    private Controller controller;
-
-    StarterPanel(Controller controller) {
-        this.controller = controller;
-
+    StarterPanel() {
         setLayout(layout = new SpringLayout());
         setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5),
-                BorderFactory.createTitledBorder(controller.getLanguage().getString("welcome"))));
+                BorderFactory.createTitledBorder(Controller.getLanguageString("welcome"))));
 
         welcome = new JPanel(new GridLayout(0, 1));
 
@@ -45,8 +41,8 @@ public class StarterPanel extends JPanel {
         });
 
         next.addActionListener(e -> {
-            controller.setLanguage(ResourceBundle.getBundle("ResourceBundle", locale.getLanguage()));
-            controller.askNextPage(PageChoice.FIRST);
+            Controller.setLanguage(ResourceBundle.getBundle("ResourceBundle", locale.getLanguage()));
+            Controller.askNextPage(PageChoice.FIRST);
             //languages.setEnabled(false);
         });
 

@@ -24,11 +24,9 @@ public class CheckoutPanel extends JPanel {
 
     private SpringLayout layout;
 
-    private Controller controller;
     private boolean isCreationMode;
 
-    public CheckoutPanel(Controller controller, boolean isCreationMode) {
-        this.controller = controller;
+    public CheckoutPanel(boolean isCreationMode) {
         this.isCreationMode = isCreationMode;
 
         setLayout(layout = new SpringLayout());
@@ -37,28 +35,28 @@ public class CheckoutPanel extends JPanel {
         programs = new JPanel(new GridLayout(0, 1));
 
         if (isCreationMode) {
-            for (Program p : controller.getExecutables()) {
+            for (Program p : Controller.getExecutables()) {
                 programList.add(new JLabel(p.toString()));
                 programs.add(programList.get(programList.size()-1));
             }
         }
 
-        intro = new JLabel(controller.getLanguage().getString("listAllPrograms"));
-        back = new JButton(controller.getLanguage().getString("previousButton"));
+        intro = new JLabel(Controller.getLanguageString("listAllPrograms"));
+        back = new JButton(Controller.getLanguageString("previousButton"));
         location = new JTextField(20);
         location.setEditable(false);
 
         if (isCreationMode) {
-            confirm = new JLabel(controller.getLanguage().getString("confirmCreation"));
-            create = new JButton(controller.getLanguage().getString("createButton"));
+            confirm = new JLabel(Controller.getLanguageString("confirmCreation"));
+            create = new JButton(Controller.getLanguageString("createButton"));
             create.setEnabled(false);
-            selectFolder = new JButton(controller.getLanguage().getString("openFolderButton"));
+            selectFolder = new JButton(Controller.getLanguageString("openFolderButton"));
 
             add(confirm);
         } else {
 
-            create = new JButton(controller.getLanguage().getString("installButton"));
-            selectFolder = new JButton(controller.getLanguage().getString("openInstallFile"));
+            create = new JButton(Controller.getLanguageString("installButton"));
+            selectFolder = new JButton(Controller.getLanguageString("openInstallFile"));
         }
 
         setUpLayout();
@@ -134,17 +132,17 @@ public class CheckoutPanel extends JPanel {
     private void addAllListeners() {
         back.addActionListener(e -> {
             if (isCreationMode) {
-                controller.askPreviousPage(PageChoice.CHECKOUT);
+                Controller.askPreviousPage(PageChoice.CHECKOUT);
             } else {
-                controller.askPreviousPage(PageChoice.CHK_INSTALL);
+                Controller.askPreviousPage(PageChoice.CHK_INSTALL);
             }
         });
 
         create.addActionListener(e -> {
             if (isCreationMode) {
-                controller.processFileScriptCreation(folder, PageChoice.CHECKOUT);
+                Controller.processFileScriptCreation(folder, PageChoice.CHECKOUT);
             } else {
-                controller.startInstallProcess();
+                Controller.startInstallProcess();
             }
         });
 
@@ -154,7 +152,7 @@ public class CheckoutPanel extends JPanel {
             if (isCreationMode) {
                 file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-                int result = file.showOpenDialog(controller.getUi());
+                int result = file.showOpenDialog(Controller.getUI());
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     folder = file.getSelectedFile();
@@ -162,25 +160,24 @@ public class CheckoutPanel extends JPanel {
                     create.setEnabled(true);
                 }
             } else {
-                file.setFileFilter(new FileNameExtensionFilter(
-                        controller.getLanguage().getString("scriptFileExtension"), "som"));
+                file.setFileFilter(new FileNameExtensionFilter(Controller.getLanguageString("scriptFileExtension"), "som"));
                 file.setAcceptAllFileFilterUsed(false);
 
-                int result = file.showOpenDialog(controller.getUi());
+                int result = file.showOpenDialog(Controller.getUI());
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     folder = file.getSelectedFile();
                     location.setText(file.getSelectedFile().getPath());
                     create.setEnabled(true);
 
-                    controller.prepareProgramArray(folder);
+                    Controller.prepareProgramArray(folder);
                 }
             }
         });
     }
 
     public void setLabels() {
-        for (Program p : controller.getExecutables()) {
+        for (Program p : Controller.getExecutables()) {
             programList.add(new JLabel(p.toString()));
             programs.add(programList.get(programList.size()-1));
         }

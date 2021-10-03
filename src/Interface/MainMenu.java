@@ -14,8 +14,6 @@ public class MainMenu extends JPanel {
 
     private SpringLayout layout;
 
-    private Controller controller;
-
     private String[] text;
     private String[] tipText;
     private String[] pages = {
@@ -24,42 +22,35 @@ public class MainMenu extends JPanel {
             PageChoice.MM_EDIT
     };
 
-    public MainMenu(Controller controller) {
-        this.controller = controller;
-
+    public MainMenu() {
         setLayout(layout = new SpringLayout());
 
         text = new String[] {
-                controller.getLanguage().getString("createScriptInstaller"),
-                controller.getLanguage().getString("loadScript"),
-                controller.getLanguage().getString("editScript")
+                Controller.getLanguageString("createScriptInstaller"),
+                Controller.getLanguageString("loadScript"),
+                Controller.getLanguageString("editScript")
         };
 
         tipText = new String[] {
-                controller.getLanguage().getString("installerTip"),
+                Controller.getLanguageString("installerTip"),
         };
 
         list = new ArrayList<>(3);
         panel = new JPanel(new GridLayout(0, 1));
         panel.setBorder(new CompoundBorder(
                 BorderFactory.createEmptyBorder(5, 5, 5, 5),
-                BorderFactory.createTitledBorder(controller.getLanguage().getString("chooseAction")
+                BorderFactory.createTitledBorder(Controller.getLanguageString("chooseAction")
                 )));
 
         for (String s : text) {
             list.add(new JButton(s));
-            list.get(list.size()-1).addActionListener(e -> {
-
-                controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]);
-            });
+            list.get(list.size()-1).addActionListener(e -> Controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]));
             panel.add(list.get(list.size()-1));
         }
 
-        previous = new JButton(controller.getLanguage().getString("previousButton"));
+        previous = new JButton(Controller.getLanguageString("previousButton"));
 
-        previous.addActionListener(e -> {
-            controller.askPreviousPage(PageChoice.MAIN_MENU);
-        });
+        previous.addActionListener(e -> Controller.askPreviousPage(PageChoice.MAIN_MENU));
 
         add(panel);
         add(previous);

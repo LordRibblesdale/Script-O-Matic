@@ -1,20 +1,20 @@
 package Interface;
 
 import ControlCenter.Controller;
+import Data.Program;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Interface extends JFrame {
-    private Controller controller;
-    private CardLayout layout;
+    private static CardLayout layout;
 
-    private JPanel frame;
+    private static JPanel frame;
 
     private StarterPanel first;
-    private MainMenu mainMenu = null;
-    private TableList tableList = null;
-    private CheckoutPanel checkoutPanel = null;
+    private static MainMenu mainMenu = null;
+    private static TableList tableList = null;
+    private static CheckoutPanel checkoutPanel = null;
 
     public Interface() {
         super("Script'o'Matic");
@@ -22,9 +22,7 @@ public class Interface extends JFrame {
         frame = new JPanel(layout = new CardLayout());
         frame.setBorder(BorderFactory.createEmptyBorder());
 
-        controller = new Controller(Interface.this);
-
-        first = new StarterPanel(controller);
+        first = new StarterPanel();
 
         frame.add(first, PageChoice.FIRST);
 
@@ -36,22 +34,22 @@ public class Interface extends JFrame {
         setVisible(true);
     }
 
-    public void initialiseCard(String card) {
+    public static void initialiseCard(String card) {
         switch (card) {
             case PageChoice.MAIN_MENU -> {
-                mainMenu = new MainMenu(controller);
+                mainMenu = new MainMenu();
                 frame.add(mainMenu, PageChoice.MAIN_MENU);
             }
             case PageChoice.MM_INSTALLER -> {
-                tableList = new TableList(controller, PageChoice.MM_INSTALLER, null);
+                tableList = new TableList(PageChoice.MM_INSTALLER, null);
                 frame.add(tableList, PageChoice.MM_INSTALLER);
             }
             case PageChoice.CHECKOUT -> {
-                checkoutPanel = new CheckoutPanel(controller, true);
+                checkoutPanel = new CheckoutPanel(true);
                 frame.add(checkoutPanel, PageChoice.CHECKOUT);
             }
             case PageChoice.CHK_INSTALL -> {
-                checkoutPanel = new CheckoutPanel(controller, false);
+                checkoutPanel = new CheckoutPanel(false);
                 frame.add(checkoutPanel, PageChoice.CHK_INSTALL);
             }
             case PageChoice.FINAL -> {
@@ -60,6 +58,42 @@ public class Interface extends JFrame {
                 frame.add(p, PageChoice.FINAL);
             }
         }
+    }
+
+    public static void showLayoutCard(String nextCard) {
+        layout.show(frame, nextCard);
+    }
+
+    public static void addProgramToTable(Program exec) {
+        tableList.getModelTable().addProgram(exec);
+    }
+
+    public static void editProgramInsideTable(int index, Program exec) {
+        tableList.getModelTable().editProgram(index, exec);
+    }
+
+    public static void removeProgramFromTable(int index) {
+        tableList.getModelTable().removeProgram(index);
+    }
+
+    public static void removeAllProgramsFromTable() {
+        tableList.getModelTable().removeAllPrograms();
+    }
+
+    public static int getTableSelectedRow() {
+        return tableList.getTable().getSelectedRow();
+    }
+
+    public static void enableNext() {
+        tableList.enableNext();
+    }
+
+    public static void disableNext() {
+        tableList.disableNext();
+    }
+
+    public static Object[] getProgramFromTable(int index) {
+        return tableList.getModelTable().getProgram(index);
     }
 
     public void setUpFrame() {
@@ -74,20 +108,7 @@ public class Interface extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    @Override
-    public CardLayout getLayout() {
-        return layout;
-    }
-
-    public TableList getTableList() {
-        return tableList;
-    }
-
     public CheckoutPanel getCheckoutPanel() {
         return checkoutPanel;
-    }
-
-    public JPanel getFrame() {
-        return frame;
     }
 }
