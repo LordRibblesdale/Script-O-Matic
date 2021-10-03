@@ -54,7 +54,7 @@ public class ProgramTable extends AbstractTableModel {
                 exec.getLink()
         });
 
-        fireTableDataChanged();;
+        fireTableDataChanged();
     }
 
     public void editProgram(int index, Program exec) {

@@ -44,17 +44,13 @@ public class MainMenu extends JPanel {
 
         for (String s : text) {
             list.add(new JButton(s));
-            list.get(list.size()-1).addActionListener(e -> {
-                Controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]);
-            });
+            list.get(list.size()-1).addActionListener(e -> Controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]));
             panel.add(list.get(list.size()-1));
         }
 
         previous = new JButton(Controller.getLanguageString("previousButton"));
 
-        previous.addActionListener(e -> {
-            Controller.askPreviousPage(PageChoice.MAIN_MENU);
-        });
+        previous.addActionListener(e -> Controller.askPreviousPage(PageChoice.MAIN_MENU));
 
         add(panel);
         add(previous);

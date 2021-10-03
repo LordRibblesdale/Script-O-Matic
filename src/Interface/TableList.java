@@ -123,25 +123,15 @@ public class TableList extends JPanel {
     }
 
     private void addAllListeners() {
-        back.addActionListener(e -> {
-            Controller.askPreviousPage(currentCard);
-        });
+        back.addActionListener(e -> Controller.askPreviousPage(currentCard));
 
-        next.addActionListener(e -> {
-            Controller.askNextPage(currentCard);
-        });
+        next.addActionListener(e -> Controller.askNextPage(currentCard));
 
-        add.addActionListener(e -> {
-            new ProgramEditorWindow();
-        });
+        add.addActionListener(e -> new ProgramEditorWindow());
 
-        remove.addActionListener(e -> {
-            Controller.processProgramDeletion();
-        });
+        remove.addActionListener(e -> Controller.processProgramDeletion());
 
-        removeAll.addActionListener(e -> {
-            Controller.processCleaningTable();
-        });
+        removeAll.addActionListener(e -> Controller.processCleaningTable());
 
         table.addMouseListener(new MouseAdapter() {
             @Override

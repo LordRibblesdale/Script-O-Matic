@@ -247,9 +247,7 @@ public class ProgramEditorWindow extends JDialog {
     }
 
     private void addAllListeners() {
-        back.addActionListener(e -> {
-            dispose();
-        });
+        back.addActionListener(e -> dispose());
 
         save.addActionListener(e -> {
             if (!fileField.getText().equals("") && fileField.getText() != null &&

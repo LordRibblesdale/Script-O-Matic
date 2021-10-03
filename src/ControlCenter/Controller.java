@@ -119,10 +119,10 @@ public class Controller {
     }
 
     public static void processFileScriptCreation(File folder, String fromCard) {
-        Script script = null;
-        ObjectOutputStream out = null;
+        Script script;
+        ObjectOutputStream out;
         File data = new File(folder.getPath() + File.separator + "DATA");
-        int result = -1;
+        int result;
 
         status = Status.BUSY;
 
@@ -255,13 +255,11 @@ public class Controller {
     private static String nextCard(String choice) {
         String nextCard = null;
 
-        switch (currentCard) {
-            case PageChoice.MAIN_MENU:
-                switch (choice) {
-                    case PageChoice.MM_INSTALLER, PageChoice.MM_EDIT -> nextCard = choice;
-                    case PageChoice.MM_LOAD -> nextCard = PageChoice.CHK_INSTALL;
-                }
-                break;
+        if (PageChoice.MAIN_MENU.equals(currentCard)) {
+            switch (choice) {
+                case PageChoice.MM_INSTALLER, PageChoice.MM_EDIT -> nextCard = choice;
+                case PageChoice.MM_LOAD -> nextCard = PageChoice.CHK_INSTALL;
+            }
         }
 
         return nextCard;
