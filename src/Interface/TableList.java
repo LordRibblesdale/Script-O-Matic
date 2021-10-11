@@ -40,7 +40,9 @@ public class TableList extends JPanel {
 
         table = new JTable(modelTable);
         scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createTitledBorder(Controller.getLanguageString("insertProgramTitle")));  //TODO finish here
+
+        //TODO finish here
+        scrollPane.setBorder(BorderFactory.createTitledBorder(Controller.getLanguageString("insertProgramTitle")));
 
         add(scrollPane);
         add(back);
@@ -76,50 +78,24 @@ public class TableList extends JPanel {
     }
 
     private void setUpLayout() {
-        layout.putConstraint(SpringLayout.NORTH, scrollPane,
-                5,
-                SpringLayout.NORTH, TableList.this);
-        layout.putConstraint(SpringLayout.WEST, scrollPane,
-                5,
-                SpringLayout.WEST, TableList.this);
-        layout.putConstraint(SpringLayout.EAST, scrollPane,
-                -5,
-                SpringLayout.EAST, TableList.this);
+        layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, TableList.this);
+        layout.putConstraint(SpringLayout.WEST, scrollPane, 5, SpringLayout.WEST, TableList.this);
+        layout.putConstraint(SpringLayout.EAST, scrollPane, -5, SpringLayout.EAST, TableList.this);
 
-        layout.putConstraint(SpringLayout.SOUTH, back,
-                -5,
-                SpringLayout.SOUTH, TableList.this);
-        layout.putConstraint(SpringLayout.WEST, back,
-                5,
-                SpringLayout.WEST, TableList.this);
+        layout.putConstraint(SpringLayout.SOUTH, back, -5, SpringLayout.SOUTH, TableList.this);
+        layout.putConstraint(SpringLayout.WEST, back, 5, SpringLayout.WEST, TableList.this);
 
-        layout.putConstraint(SpringLayout.EAST, next,
-                -5,
-                SpringLayout.EAST, TableList.this);
-        layout.putConstraint(SpringLayout.SOUTH, next,
-                -5,
-                SpringLayout.SOUTH, TableList.this);
+        layout.putConstraint(SpringLayout.EAST, next,  -5, SpringLayout.EAST, TableList.this);
+        layout.putConstraint(SpringLayout.SOUTH, next, -5, SpringLayout.SOUTH, TableList.this);
 
-        layout.putConstraint(SpringLayout.SOUTH, remove,
-                -5,
-                SpringLayout.NORTH, next);
-        layout.putConstraint(SpringLayout.EAST, remove,
-                -5,
-                SpringLayout.EAST, TableList.this);
+        layout.putConstraint(SpringLayout.SOUTH, remove, -5, SpringLayout.NORTH, next);
+        layout.putConstraint(SpringLayout.EAST, remove, -5, SpringLayout.EAST, TableList.this);
 
-        layout.putConstraint(SpringLayout.EAST, removeAll,
-                -5,
-                SpringLayout.WEST, remove);
-        layout.putConstraint(SpringLayout.SOUTH, removeAll,
-                -5,
-                SpringLayout.NORTH, next);
+        layout.putConstraint(SpringLayout.EAST, removeAll, -5, SpringLayout.WEST, remove);
+        layout.putConstraint(SpringLayout.SOUTH, removeAll, -5, SpringLayout.NORTH, next);
 
-        layout.putConstraint(SpringLayout.EAST, add,
-                -5,
-                SpringLayout.WEST, removeAll);
-        layout.putConstraint(SpringLayout.SOUTH, add,
-                -5,
-                SpringLayout.NORTH, next);
+        layout.putConstraint(SpringLayout.EAST, add, -5, SpringLayout.WEST, removeAll);
+        layout.putConstraint(SpringLayout.SOUTH, add, -5, SpringLayout.NORTH, next);
     }
 
     private void addAllListeners() {
@@ -138,11 +114,11 @@ public class TableList extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (scrollPane.contains(e.getPoint())) {
                     if (e.getClickCount() == 2) {
-                        int index = Interface.getTableSelectedRow();
+                        int index = MainUI.getTableSelectedRow();
 
                         if (index != -1) {
                             // TODO move object collection methods to Controller instead of Interface (UI should not do this)
-                            Object[] data = Interface.getProgramFromTable(index);
+                            Object[] data = MainUI.getProgramFromTable(index);
 
                             new ProgramEditorWindow(
                                     (String) data[2],

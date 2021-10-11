@@ -11,7 +11,6 @@ public class ProgramTable extends AbstractTableModel {
     private ArrayList<Object[]> data;
 
     public ProgramTable() {
-
         columns = new String[] {
                 Controller.getLanguageString("nameProgram"),
                 Controller.getLanguageString("executableFile"),
@@ -58,6 +57,11 @@ public class ProgramTable extends AbstractTableModel {
     }
 
     public void editProgram(int index, Program exec) {
+        if (index < 0 || index > data.size()) {
+            System.err.println("ERROR: index out of range");
+            return;
+        }
+
         data.set(index, new Object[] {
                 exec.getName(),
                 exec.getExecLocation().getName(),
@@ -70,10 +74,12 @@ public class ProgramTable extends AbstractTableModel {
     }
 
     public void removeProgram(int index) {
-        if (!data.isEmpty() && index != -1) {
-            data.remove(index);
+        if (index < 0 || index > data.size()) {
+            System.err.println("ERROR: index out of range");
+            return;
         }
 
+        data.remove(index);
         fireTableDataChanged();
     }
 

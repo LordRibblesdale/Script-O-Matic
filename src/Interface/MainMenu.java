@@ -44,7 +44,9 @@ public class MainMenu extends JPanel {
 
         for (String s : text) {
             list.add(new JButton(s));
-            list.get(list.size()-1).addActionListener(e -> Controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())]));
+            list.get(list.size()-1).addActionListener(e ->
+                    Controller.askNextPage(PageChoice.MAIN_MENU, pages[list.indexOf(e.getSource())])
+            );
             panel.add(list.get(list.size()-1));
         }
 
@@ -55,27 +57,10 @@ public class MainMenu extends JPanel {
         add(panel);
         add(previous);
 
-        layout.putConstraint(SpringLayout.NORTH, panel,
-                5,
-                SpringLayout.NORTH, MainMenu.this);
-        layout.putConstraint(SpringLayout.WEST, panel,
-                5,
-                SpringLayout.WEST, MainMenu.this);
+        layout.putConstraint(SpringLayout.NORTH, panel, 5, SpringLayout.NORTH, MainMenu.this);
+        layout.putConstraint(SpringLayout.WEST, panel, 5, SpringLayout.WEST, MainMenu.this);
 
-        layout.putConstraint(SpringLayout.WEST, previous,
-                5,
-                SpringLayout.WEST, MainMenu.this);
-        layout.putConstraint(SpringLayout.SOUTH, previous,
-                -5,
-                SpringLayout.SOUTH, MainMenu.this);
-
-        /*
-        layout.putConstraint(SpringLayout.EAST, next,
-                -5,
-                SpringLayout.EAST, MainMenu.this);
-        layout.putConstraint(SpringLayout.SOUTH, next,
-                -5,
-                SpringLayout.SOUTH, MainMenu.this);
-        */
+        layout.putConstraint(SpringLayout.WEST, previous, 5, SpringLayout.WEST, MainMenu.this);
+        layout.putConstraint(SpringLayout.SOUTH, previous, -5, SpringLayout.SOUTH, MainMenu.this);
     }
 }

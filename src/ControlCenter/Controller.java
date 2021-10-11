@@ -2,7 +2,7 @@ package ControlCenter;
 
 import Data.Program;
 import Data.Script;
-import Interface.Interface;
+import Interface.MainUI;
 import Interface.PageChoice;
 import org.apache.commons.io.FileUtils;
 
@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Controller {
-    private static Interface ui;
+    private static MainUI ui;
 
     private static ResourceBundle language;
 
@@ -31,7 +31,7 @@ public class Controller {
         windows = new Stack<>();
         executables = new ArrayList<>(1);
         language = ResourceBundle.getBundle("ResourceBundle", Language.ENGLISH.getLanguage());
-        ui = new Interface();
+        ui = new MainUI();
 
         initialisedCards.add(PageChoice.FIRST);
         windows.add(PageChoice.FIRST);
@@ -43,13 +43,13 @@ public class Controller {
 
             String nextCard = nextCard();
 
-            Interface.initialiseCard(nextCard);
+            MainUI.initialiseCard(nextCard);
 
             if (!initialisedCards.contains(nextCard)) {
                 initialisedCards.add(nextCard);
             }
 
-            Interface.showLayoutCard(nextCard);
+            MainUI.showLayoutCard(nextCard);
             currentCard = nextCard;
         }
     }
@@ -64,13 +64,13 @@ public class Controller {
 
             String nextCard = nextCard(choice);
 
-            Interface.initialiseCard(nextCard);
+            MainUI.initialiseCard(nextCard);
 
             if (!initialisedCards.contains(nextCard)) {
                 initialisedCards.add(nextCard);
             }
 
-            Interface.showLayoutCard(nextCard);
+            MainUI.showLayoutCard(nextCard);
             askForLargerWindow();
             currentCard = nextCard;
         }
@@ -80,7 +80,7 @@ public class Controller {
         if (currentCard.equals(fromCard)) {
             if (status != Status.BUSY) {
                 String previousCard = previousCard();
-                Interface.showLayoutCard(previousCard);
+                MainUI.showLayoutCard(previousCard);
                 currentCard = previousCard;
             }
         }
@@ -88,25 +88,25 @@ public class Controller {
 
     public static void processProgramCreation(Program exec) {
         executables.add(exec);
-        Interface.addProgramToTable(exec);
+        MainUI.addProgramToTable(exec);
     }
 
     public static void processProgramModify(Program exec) {
-        int index = Interface.getTableSelectedRow();
+        int index = MainUI.getTableSelectedRow();
         executables.set(index, exec);
-        Interface.editProgramInsideTable(index, exec);
+        MainUI.editProgramInsideTable(index, exec);
     }
 
     public static void processProgramDeletion() {
         if (!executables.isEmpty()) {
-            int index = Interface.getTableSelectedRow();
+            int index = MainUI.getTableSelectedRow();
 
             if (index != -1) {
-                Interface.removeProgramFromTable(index);
+                MainUI.removeProgramFromTable(index);
 
                 executables.remove(index);
                 if (executables.isEmpty()) {
-                    Interface.disableNext();
+                    MainUI.disableNext();
                 }
             }
         }
@@ -114,8 +114,8 @@ public class Controller {
 
     public static void processCleaningTable() {
         executables.clear();
-        Interface.removeAllProgramsFromTable();
-        Interface.disableNext();
+        MainUI.removeAllProgramsFromTable();
+        MainUI.disableNext();
     }
 
     public static void processFileScriptCreation(File folder, String fromCard) {
@@ -127,11 +127,12 @@ public class Controller {
         status = Status.BUSY;
 
         try {
-            data.mkdir();
+            if (!data.mkdir()) {
+                System.err.printf("ERROR: Cannot create folder in %s", data.getPath());
+                return;
+            }
 
             for (Program p : executables) {
-                //FileOutputStream fileOutputStream;
-
                 if (p.hasDependencies()) {
                     FileUtils.copyDirectoryToDirectory(p.getExecLocation().toPath().getParent().toFile(),
                             data);
@@ -234,7 +235,7 @@ public class Controller {
         ui.enlargeWindow();
     }
 
-    public static Interface getUI() {
+    public static MainUI getUI() {
         return ui;
     }
 
@@ -253,16 +254,15 @@ public class Controller {
     }
 
     private static String nextCard(String choice) {
-        String nextCard = null;
-
         if (PageChoice.MAIN_MENU.equals(currentCard)) {
-            switch (choice) {
-                case PageChoice.MM_INSTALLER, PageChoice.MM_EDIT -> nextCard = choice;
-                case PageChoice.MM_LOAD -> nextCard = PageChoice.CHK_INSTALL;
-            }
+            return switch (choice) {
+                case PageChoice.MM_INSTALLER, PageChoice.MM_EDIT -> choice;
+                case PageChoice.MM_LOAD -> PageChoice.CHK_INSTALL;
+                default -> null;
+            };
         }
 
-        return nextCard;
+        return null;
     }
 
     private static String previousCard() {
