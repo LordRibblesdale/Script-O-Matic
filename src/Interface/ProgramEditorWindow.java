@@ -140,110 +140,50 @@ public class ProgramEditorWindow extends JDialog {
     }
 
     private void setUpLayout() {
-        layout.putConstraint(SpringLayout.NORTH, fileLabel,
-                5,
-                SpringLayout.NORTH, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.WEST, fileLabel,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, fileLabel, 5, SpringLayout.NORTH, getContentPane());
+        layout.putConstraint(SpringLayout.WEST, fileLabel, 5, SpringLayout.WEST, getContentPane());
 
-        layout.putConstraint(SpringLayout.NORTH, fileField,
-                5,
-                SpringLayout.SOUTH, fileLabel);
-        layout.putConstraint(SpringLayout.WEST, fileField,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, fileField, 5, SpringLayout.SOUTH, fileLabel);
+        layout.putConstraint(SpringLayout.WEST, fileField, 5, SpringLayout.WEST, getContentPane());
 
-        layout.putConstraint(SpringLayout.WEST, openFile,
-                5,
-                SpringLayout.EAST, fileField);
-        layout.putConstraint(SpringLayout.NORTH, openFile,
-                0,
-                SpringLayout.NORTH, fileField);
+        layout.putConstraint(SpringLayout.WEST, openFile, 5, SpringLayout.EAST, fileField);
+        layout.putConstraint(SpringLayout.NORTH, openFile, 0, SpringLayout.NORTH, fileField);
 
-        layout.putConstraint(SpringLayout.WEST, openFolder,
-                5,
-                SpringLayout.EAST, openFile);
-        layout.putConstraint(SpringLayout.NORTH, openFolder,
-                0,
-                SpringLayout.NORTH, openFile);
+        layout.putConstraint(SpringLayout.WEST, openFolder, 5, SpringLayout.EAST, openFile);
+        layout.putConstraint(SpringLayout.NORTH, openFolder, 0, SpringLayout.NORTH, openFile);
 
-        layout.putConstraint(SpringLayout.NORTH, isAloneExecLabel,
-                10,
-                SpringLayout.SOUTH, fileField);
-        layout.putConstraint(SpringLayout.WEST, isAloneExecLabel,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, isAloneExecLabel, 10, SpringLayout.SOUTH, fileField);
+        layout.putConstraint(SpringLayout.WEST, isAloneExecLabel, 5, SpringLayout.WEST, getContentPane());
 
-        layout.putConstraint(SpringLayout.WEST, isAloneExec,
-                5,
-                SpringLayout.EAST, isAloneExecLabel);
-        layout.putConstraint(SpringLayout.NORTH, isAloneExec,
-                0,
-                SpringLayout.NORTH, isAloneExecLabel);
+        layout.putConstraint(SpringLayout.WEST, isAloneExec, 5, SpringLayout.EAST, isAloneExecLabel);
+        layout.putConstraint(SpringLayout.NORTH, isAloneExec, 0, SpringLayout.NORTH, isAloneExecLabel);
 
-        layout.putConstraint(SpringLayout.WEST, nameLabel,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, nameLabel,
-                5,
-                SpringLayout.SOUTH, isAloneExecLabel);
+        layout.putConstraint(SpringLayout.WEST, nameLabel, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, nameLabel, 5, SpringLayout.SOUTH, isAloneExecLabel);
 
-        layout.putConstraint(SpringLayout.WEST, nameField,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, nameField,
-                5,
-                SpringLayout.SOUTH, nameLabel);
+        layout.putConstraint(SpringLayout.WEST, nameField, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, nameField, 5, SpringLayout.SOUTH, nameLabel);
 
-        layout.putConstraint(SpringLayout.WEST, descriptionLabel,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, descriptionLabel,
-                5,
-                SpringLayout.SOUTH, nameField);
+        layout.putConstraint(SpringLayout.WEST, descriptionLabel, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, descriptionLabel, 5, SpringLayout.SOUTH, nameField);
 
-        layout.putConstraint(SpringLayout.WEST, descriptionField,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, descriptionField,
-                5,
-                SpringLayout.SOUTH, descriptionLabel);
+        layout.putConstraint(SpringLayout.WEST, descriptionField, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, descriptionField, 5, SpringLayout.SOUTH, descriptionLabel);
 
-        layout.putConstraint(SpringLayout.WEST, linkLabel,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, linkLabel,
-                5,
-                SpringLayout.SOUTH, descriptionField);
+        layout.putConstraint(SpringLayout.WEST, linkLabel, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, linkLabel, 5, SpringLayout.SOUTH, descriptionField);
 
-        layout.putConstraint(SpringLayout.WEST, linkField,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, linkField,
-                5,
-                SpringLayout.SOUTH, linkLabel);
+        layout.putConstraint(SpringLayout.WEST, linkField, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, linkField, 5, SpringLayout.SOUTH, linkLabel);
 
-        layout.putConstraint(SpringLayout.WEST, addExtras,
-                5,
-                SpringLayout.WEST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, addExtras,
-                5,
-                SpringLayout.SOUTH, linkField);
+        layout.putConstraint(SpringLayout.WEST, addExtras, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, addExtras, 5, SpringLayout.SOUTH, linkField);
 
-        layout.putConstraint(SpringLayout.EAST, save,
-                -5,
-                SpringLayout.EAST, ProgramEditorWindow.this.getContentPane());
-        layout.putConstraint(SpringLayout.SOUTH, save,
-                -5,
-                SpringLayout.SOUTH, ProgramEditorWindow.this.getContentPane());
+        layout.putConstraint(SpringLayout.EAST, save, -5, SpringLayout.EAST, getContentPane());
+        layout.putConstraint(SpringLayout.SOUTH, save, -5, SpringLayout.SOUTH, getContentPane());
 
-        layout.putConstraint(SpringLayout.EAST, back,
-                -5,
-                SpringLayout.WEST, save);
-        layout.putConstraint(SpringLayout.SOUTH, back,
-                -5,
-                SpringLayout.SOUTH, ProgramEditorWindow.this.getContentPane());
+        layout.putConstraint(SpringLayout.EAST, back, -5, SpringLayout.WEST, save);
+        layout.putConstraint(SpringLayout.SOUTH, back, -5, SpringLayout.SOUTH, getContentPane());
     }
 
     private void addAllListeners() {
@@ -321,7 +261,7 @@ public class ProgramEditorWindow extends JDialog {
             } finally {
                 dispose();
 
-                Interface.enableNext(); //TODO fix here
+                MainUI.enableNext(); //TODO fix here
             }
         } else if (status == Status.EDITING) {
             try {
@@ -347,7 +287,7 @@ public class ProgramEditorWindow extends JDialog {
             } finally {
                 dispose();
 
-                Interface.enableNext(); //TODO fix here
+                MainUI.enableNext(); //TODO fix here
             }
 
         }

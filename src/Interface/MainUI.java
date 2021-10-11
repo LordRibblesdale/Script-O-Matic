@@ -6,7 +6,7 @@ import Data.Program;
 import javax.swing.*;
 import java.awt.*;
 
-public class Interface extends JFrame {
+public class MainUI extends JFrame {
     private static CardLayout layout;
 
     private static JPanel frame;
@@ -16,7 +16,7 @@ public class Interface extends JFrame {
     private static TableList tableList = null;
     private static CheckoutPanel checkoutPanel = null;
 
-    public Interface() {
+    public MainUI() {
         super("Script'o'Matic");
 
         frame = new JPanel(layout = new CardLayout());
@@ -97,8 +97,6 @@ public class Interface extends JFrame {
     }
 
     public void setUpFrame() {
-        //pack();
-        //setMinimumSize(getSize());
         repaint();
         validate();
     }
